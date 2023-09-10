@@ -7,8 +7,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -46,13 +44,11 @@ fun CodeTextField(
     val typography = DragonFlyTheme.typography
     val keyboardManager = LocalSoftwareKeyboardController.current
 
-    val borderColor by remember {
-        derivedStateOf {
-            if (digit.isNotBlank()) {
-                colors.primary.main
-            } else {
-                colors.neutral7
-            }
+    val borderColor = remember(digit) {
+        if (digit.isNotBlank()) {
+            colors.primary.main
+        } else {
+            colors.neutral7
         }
     }
     BaseTextField(
