@@ -6,11 +6,11 @@ plugins {
 }
 
 android {
-    namespace = "com.mr.nemo.copay"
+    namespace = "com.mr.nemo.dragonfly"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.mr.nemo.copay"
+        applicationId = "com.mr.nemo.dragonfly"
         minSdk = 24
         targetSdk = 33
         versionCode = 1
@@ -53,7 +53,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.0"
+        kotlinCompilerExtensionVersion = "1.5.3"
     }
     packaging {
         resources {
@@ -74,6 +74,8 @@ dependencies {
     implementation(libs.ui.graphics)
     implementation(libs.ui.tooling.preview)
     implementation(libs.material3)
+    implementation(libs.material.icons.core)
+    implementation(libs.material.icons.extended)
 
     implementation(libs.utils.coil)
 

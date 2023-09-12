@@ -1,3 +1,29 @@
 <resources>
-    <string name="app_name">CoPay</string>
+    <string name="app_name">DragonFly</string>
+
+    <string name="button_next">Next</string>
+    <string name="button_get_started">Get Started</string>
+    <string name="button_forgot_password">Forgot password?</string>
+    <string name="button_login">Login</string>
+    <string name="button_login_with_gmail">Login with Gmail</string>
+    <string name="button_register_with_gmail">Register with Gmail</string>
+    <string name="button_register_with_email">Register with email</string>
+
+    <string name="swipe_for_more">Swipe for more</string>
+    <string name="welcome">Welcome</string>
+    <string name="sign_in_subtitle">Enjoy all the features that make it easy for you to manage your finances</string>
+    <string name="other">Other</string>
+    <string name="register_part_first">Don\'t have an account? </string>
+    <string name="register">Register</string>
+    <string name="register_subtitle">Create an account and enjoy the benefits we provide for you</string>
+    <string name="enter_security_code">Enter security code</string>
+    <string name="information">Information</string>
+    <string name="frequently_read_articles">Frequently read articles</string>
+
+    <string name="content_description_swipe_down_for_more">Swipe down for more</string>
+    <string name="content_description_navigate_back">Navigate backward</string>
+
+    <string name="hint_password">Password</string>
+    <string name="hint_email_username">Email / Username</string>
+
 </resources>

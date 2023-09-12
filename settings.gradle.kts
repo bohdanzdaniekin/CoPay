@@ -13,5 +13,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "CoPay"
+rootProject.name = "DragonFly"
 include(":app")
