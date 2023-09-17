@@ -1,7 +1,8 @@
 package com.mr.nemo.dragonfly.di
 
-import org.koin.dsl.module
+import org.koin.core.annotation.ComponentScan
+import org.koin.core.annotation.Module
 
-val appModule = module {
-
-}
+@Module
+@ComponentScan("com.mr.nemo.dragonfly")
+class AppModule

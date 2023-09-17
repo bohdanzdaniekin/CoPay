@@ -136,7 +136,10 @@ fun SignInScreen(
 
             PrimaryButton(
                 text = stringResource(R.string.button_login),
-                onClick = { /*TODO*/ }
+                onClick = { /*TODO*/ },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .requiredHeight(56.dp)
             )
 
             Spacer(modifier = Modifier.height(spacing.medium))
