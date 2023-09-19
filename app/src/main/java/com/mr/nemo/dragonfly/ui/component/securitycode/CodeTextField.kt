@@ -17,8 +17,6 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
@@ -36,8 +34,7 @@ fun CodeTextField(
     modifier: Modifier = Modifier,
     size: Dp = 40.dp,
     previousFocus: FocusRequester? = null,
-    nextFocus: FocusRequester? = null,
-    visualTransformation: VisualTransformation = PasswordVisualTransformation()
+    nextFocus: FocusRequester? = null
 ) {
     val colors = DragonFlyTheme.colors
     val typography = DragonFlyTheme.typography
@@ -85,7 +82,6 @@ fun CodeTextField(
             focusedTextColor = colors.primary.main,
             unfocusedTextColor = colors.primary.main
         ),
-        visualTransformation = visualTransformation,
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Number,
             imeAction = ImeAction.Next

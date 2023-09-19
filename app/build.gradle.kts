@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.com.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.parcelize)
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -12,7 +13,7 @@ android {
     defaultConfig {
         applicationId = "com.mr.nemo.dragonfly"
         minSdk = 24
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0.0"
 
@@ -60,6 +61,13 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+    applicationVariants.configureEach {
+        kotlin.sourceSets {
+            getByName(name) {
+                kotlin.srcDir("build/generated/ksp/${name}/kotlin")
+            }
+        }
+    }
 }
 
 dependencies {
@@ -79,8 +87,13 @@ dependencies {
 
     implementation(libs.utils.coil)
 
-    implementation(libs.utils.koin.core)
+    implementation(libs.utils.koin.bom)
+    implementation(libs.utils.koin.android)
     implementation(libs.utils.koin.compose)
+
+    implementation(libs.utils.koin.annotations.bom)
+    implementation(libs.utils.koin.annotations)
+    ksp(libs.utils.koin.compiler)
 
     debugImplementation(libs.ui.tooling)
     debugImplementation(libs.ui.test.manifest)
@@ -91,4 +104,8 @@ dependencies {
     androidTestImplementation(libs.espresso.core)
     androidTestImplementation(platform(libs.compose.bom))
     androidTestImplementation(libs.ui.test.junit4)
+}
+
+ksp {
+    arg("KOIN_CONFIG_CHECK","true")
 }

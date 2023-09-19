@@ -22,6 +22,7 @@
 
     <string name="content_description_swipe_down_for_more">Swipe down for more</string>
     <string name="content_description_navigate_back">Navigate backward</string>
+    <string name="content_description_sign_up_faq">Navigate to Sign Up FAQ</string>
 
     <string name="hint_password">Password</string>
     <string name="hint_email_username">Email / Username</string>
