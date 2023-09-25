@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mr.nemo.dragonfly.R
 import com.mr.nemo.dragonfly.domain.entity.OnboardingContent
-import com.mr.nemo.dragonfly.ui.entitiy.onboarding.OnboardingEffect
+import com.mr.nemo.dragonfly.ui.entitiy.onboarding.OnboardingScreenEffect
 import com.mr.nemo.dragonfly.ui.entitiy.onboarding.OnboardingScreenEvent
 import com.mr.nemo.dragonfly.ui.entitiy.onboarding.OnboardingScreenState
 import kotlinx.coroutines.channels.Channel
@@ -18,7 +18,7 @@ import org.koin.android.annotation.KoinViewModel
 @KoinViewModel
 class OnboardingViewModel : ViewModel() {
 
-    private val _effect = Channel<OnboardingEffect>()
+    private val _effect = Channel<OnboardingScreenEffect>()
     val effect = _effect.receiveAsFlow()
 
     private val _state = MutableStateFlow(OnboardingScreenState())
@@ -64,7 +64,7 @@ class OnboardingViewModel : ViewModel() {
                                 currentPage = (state.currentPage - 1).coerceAtLeast(0)
                             )
                         } else {
-                            _effect.send(OnboardingEffect.NavigateBackward())
+                            _effect.send(OnboardingScreenEffect.NavigateBackward())
                             state
                         }
                     }
@@ -78,7 +78,7 @@ class OnboardingViewModel : ViewModel() {
                                 currentPage = state.currentPage + 1
                             )
                         } else {
-                            _effect.send(OnboardingEffect.NavigateForward())
+                            _effect.send(OnboardingScreenEffect.NavigateForward())
                             state
                         }
                     }

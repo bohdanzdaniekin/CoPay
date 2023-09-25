@@ -19,7 +19,7 @@ import androidx.lifecycle.flowWithLifecycle
 import com.mr.nemo.dragonfly.R
 import com.mr.nemo.dragonfly.domain.entity.OnboardingContent
 import com.mr.nemo.dragonfly.ui.component.UntitledTopAppBar
-import com.mr.nemo.dragonfly.ui.entitiy.onboarding.OnboardingEffect
+import com.mr.nemo.dragonfly.ui.entitiy.onboarding.OnboardingScreenEffect
 import com.mr.nemo.dragonfly.ui.entitiy.onboarding.OnboardingScreenEvent
 import com.mr.nemo.dragonfly.ui.entitiy.onboarding.OnboardingScreenState
 import com.mr.nemo.dragonfly.ui.theme.DragonFlyTheme
@@ -35,20 +35,17 @@ fun OnboardingScreen(
     val state by viewModel.state.collectAsState()
     val lifecycleOwner = LocalLifecycleOwner.current
 
-    LaunchedEffect(lifecycleOwner, lifecycleOwner) {
-        viewModel
-            .effect
-            .flowWithLifecycle(lifecycleOwner.lifecycle)
-            .collectLatest { effect ->
-                when (effect) {
-                    is OnboardingEffect.NavigateForward -> {
-                        // TODO
-                    }
-                    is OnboardingEffect.NavigateBackward -> {
-                        // TODO
-                    }
+    LaunchedEffect(lifecycleOwner) {
+        viewModel.effect.flowWithLifecycle(lifecycleOwner.lifecycle).collectLatest { effect ->
+            when (effect) {
+                is OnboardingScreenEffect.NavigateForward -> {
+                    // TODO
+                }
+                is OnboardingScreenEffect.NavigateBackward -> {
+                    // TODO
                 }
             }
+        }
     }
 
     val pagerState = rememberPagerState {

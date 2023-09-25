@@ -3,7 +3,7 @@ package com.mr.nemo.dragonfly.ui.screen
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import com.mr.nemo.dragonfly.ui.screen.onboarding.OnboardingScreen
+import com.mr.nemo.dragonfly.ui.screen.auth.signin.SignInScreen
 import com.mr.nemo.dragonfly.ui.theme.DragonFlyTheme
 
 class MainActivity : ComponentActivity() {
@@ -12,7 +12,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             DragonFlyTheme {
-                OnboardingScreen()
+                SignInScreen()
             }
         }
     }

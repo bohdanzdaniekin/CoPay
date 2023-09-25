@@ -1,4 +1,4 @@
-package com.mr.nemo.dragonfly.ui.screen.auth.signup
+package com.mr.nemo.dragonfly.domain.entity.auth.signup
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
@@ -7,4 +7,4 @@ import kotlinx.parcelize.Parcelize
 data class InfoItem(
     val title: String,
     val subtitle: String
-): Parcelable
+) : Parcelable

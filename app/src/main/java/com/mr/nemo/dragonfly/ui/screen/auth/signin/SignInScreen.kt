@@ -16,13 +16,18 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.flowWithLifecycle
 import com.mr.nemo.dragonfly.R
 import com.mr.nemo.dragonfly.ui.component.UntitledTopAppBar
 import com.mr.nemo.dragonfly.ui.component.button.Checkbox
@@ -31,14 +36,49 @@ import com.mr.nemo.dragonfly.ui.component.button.PrimaryButton
 import com.mr.nemo.dragonfly.ui.component.text.TitleText
 import com.mr.nemo.dragonfly.ui.component.textfield.BaseTextField
 import com.mr.nemo.dragonfly.ui.component.textfield.PasswordTextField
+import com.mr.nemo.dragonfly.ui.entitiy.signin.SignInScreenEffect
+import com.mr.nemo.dragonfly.ui.entitiy.signin.SignInScreenEvent
+import com.mr.nemo.dragonfly.ui.entitiy.signin.SignInScreenState
 import com.mr.nemo.dragonfly.ui.theme.DragonFlyTheme
+import kotlinx.coroutines.flow.collectLatest
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun SignInScreen(
-    email: String,
-    onEmailChanged: (String) -> Unit,
-    password: String,
-    onPasswordChanged: (String) -> Unit,
+    viewModel: SignInViewModel = koinViewModel()
+) {
+    val state by viewModel.state.collectAsState()
+    val lifecycleOwner = LocalLifecycleOwner.current
+
+    LaunchedEffect(lifecycleOwner) {
+        viewModel.effect.flowWithLifecycle(lifecycleOwner.lifecycle).collectLatest { effect ->
+            when (effect) {
+                is SignInScreenEffect.LoginWithGmail -> {
+                    // TODO: To be implemented
+                }
+                is SignInScreenEffect.NavigateForward -> {
+                    // TODO: To be implemented
+                }
+                is SignInScreenEffect.NavigateToForgotPassword -> {
+                    // TODO: To be implemented
+                }
+                is SignInScreenEffect.NavigateToSignUp -> {
+                    // TODO: To be implemented
+                }
+            }
+        }
+    }
+
+    SignInScreen(
+        state = state,
+        onEvent = viewModel::onEvent
+    )
+}
+
+@Composable
+private fun SignInScreen(
+    state: SignInScreenState,
+    onEvent: (event: SignInScreenEvent) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val spacing = DragonFlyTheme.spacing
@@ -77,8 +117,8 @@ fun SignInScreen(
             Spacer(modifier = Modifier.height(spacing.xLarge))
 
             BaseTextField(
-                value = email,
-                onValueChange = onEmailChanged,
+                value = state.username,
+                onValueChange = { value -> onEvent(SignInScreenEvent.OnUsernameChanged(value)) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(72.dp),
@@ -88,8 +128,8 @@ fun SignInScreen(
             Spacer(modifier = Modifier.height(spacing.medium))
 
             PasswordTextField(
-                password = password,
-                onPasswordValueChange = onPasswordChanged,
+                password = state.password,
+                onPasswordValueChange = { value -> onEvent(SignInScreenEvent.OnPasswordChanged(value)) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(72.dp)
@@ -107,20 +147,24 @@ fun SignInScreen(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Checkbox(
-                        isChecked = false,
-                        onCheckedChange = {},
+                        isChecked = state.rememberMe,
+                        onCheckedChange = { isChecked ->
+                            onEvent(SignInScreenEvent.OnRememberMeChecked(isChecked))
+                        },
                         modifier = Modifier.size(24.dp)
                     )
                     Spacer(modifier = Modifier.width(spacing.xSmall))
                     Text(
-                        text = "Remember me",
+                        text = stringResource(R.string.remember_me),
                         style = typography.text2.regular,
                         color = colors.neutral2
                     )
                 }
 
                 TextButton(
-                    onClick = { /*TODO*/ },
+                    onClick = {
+                        onEvent(SignInScreenEvent.OnForgotPasswordClicked)
+                    },
                     colors = ButtonDefaults.textButtonColors(
                         contentColor = colors.neutral2
                     )
@@ -136,7 +180,9 @@ fun SignInScreen(
 
             PrimaryButton(
                 text = stringResource(R.string.button_login),
-                onClick = { /*TODO*/ },
+                onClick = {
+                    onEvent(SignInScreenEvent.OnLoginWithGmailClicked)
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .requiredHeight(56.dp)
@@ -155,7 +201,9 @@ fun SignInScreen(
 
             OutlinedButton(
                 text = stringResource(R.string.button_login_with_gmail),
-                onClick = {},
+                onClick = {
+                    onEvent(SignInScreenEvent.OnLoginWithGmailClicked)
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .requiredHeight(56.dp),
@@ -171,23 +219,38 @@ fun SignInScreen(
 
             Spacer(modifier = Modifier.height(spacing.medium))
 
-            Row(
+            Column(
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f),
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.Bottom
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Bottom
             ) {
-                Text(
-                    text = stringResource(R.string.register_part_first),
-                    style = typography.text1.regular,
-                    color = colors.neutral2
-                )
-                Text(
-                    text = stringResource(R.string.register),
-                    style = typography.text1.regular,
-                    color = colors.primary.main
-                )
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = stringResource(R.string.register_part_first),
+                        style = typography.text1.regular,
+                        color = colors.neutral2,
+                        modifier = Modifier
+                    )
+
+                    TextButton(
+                        onClick = {
+                            onEvent(SignInScreenEvent.OnRegisterClicked)
+                        },
+                    ) {
+                        Text(
+                            text = stringResource(R.string.register),
+                            style = typography.text1.regular,
+                            color = colors.primary.main
+                        )
+                    }
+                }
             }
 
             Spacer(modifier = Modifier.height(spacing.large))
@@ -200,10 +263,8 @@ fun SignInScreen(
 fun SignInScreenPreview() {
     DragonFlyTheme {
         SignInScreen(
-            email = "",
-            onEmailChanged = {},
-            password = "",
-            onPasswordChanged = {}
+            state = SignInScreenState(),
+            onEvent = {}
         )
     }
 }

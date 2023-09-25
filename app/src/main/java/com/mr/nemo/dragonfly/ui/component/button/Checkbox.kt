@@ -68,7 +68,7 @@ fun Checkbox(
 fun rememberCheckboxBorderColor(
     enabled: Boolean,
     color: Color = DragonFlyTheme.colors.neutral2,
-    width: Dp = 1.dp,
+    width: Dp = 2.dp,
     disabledOpacity: Float = 0.12f
 ): BorderStroke {
     val borderColor: Color = if (enabled) {
