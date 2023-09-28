@@ -3,13 +3,15 @@
 package com.mr.nemo.dragonfly.ui.component.textfield
 
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
@@ -18,12 +20,9 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.SolidColor
@@ -74,12 +73,11 @@ fun BaseTextField(
     }
     val mergedTextStyle = textStyle.merge(TextStyle(color = textColor))
 
-    var isFocused by remember {
-        mutableStateOf(false)
-    }
+    val isFocused by interactionSource.collectIsFocusedAsState()
 
     val mergedPlaceholderTextStyle =
         placeholderTextStyle.merge(TextStyle(color = placeholderTextColor))
+
     val innerLabelTextStyle = if (value.isBlank() && !isFocused) {
         mergedPlaceholderTextStyle
     } else {
@@ -91,17 +89,20 @@ fun BaseTextField(
         modifier = if (label != null) {
             modifier
                 .semantics(mergeDescendants = true) {}
-                .padding(top = DragonFlyTheme.spacing.xSmall)
+                .padding(
+                    top = if (value.isBlank()) {
+                        DragonFlyTheme.spacing.medium
+                    } else {
+                        DragonFlyTheme.spacing.xSmall
+                    }
+                )
         } else {
             modifier
         }
             .defaultMinSize(
                 minWidth = OutlinedTextFieldDefaults.MinWidth,
                 minHeight = OutlinedTextFieldDefaults.MinHeight
-            )
-            .onFocusChanged { focusState ->
-                isFocused = focusState.isFocused
-            },
+            ),
         onValueChange = onValueChange,
         enabled = isEnabled,
         readOnly = isReadOnly,
@@ -120,19 +121,24 @@ fun BaseTextField(
                 visualTransformation = visualTransformation,
                 innerTextField = innerTextField,
                 placeholder = if (!placeholder.isNullOrBlank()) {
-                    placeholder(
-                        placeholder,
-                        mergedPlaceholderTextStyle
-                    )
+                    @Composable {
+                        Text(
+                            text = placeholder,
+                            style = mergedPlaceholderTextStyle,
+                            maxLines = maxLines
+                        )
+                    }
                 } else {
                     null
                 },
-                label = if (!label.isNullOrBlank()) {
-                    placeholder(
-                        label,
-                        innerLabelTextStyle,
-                        modifier = Modifier.padding(bottom = 4.dp)
-                    )
+                label = if (!label.isNullOrBlank() && (value.isNotBlank() || placeholder.isNullOrBlank())) {
+                    @Composable {
+                        Text(
+                            text = label,
+                            style = innerLabelTextStyle,
+                            maxLines = maxLines
+                        )
+                    }
                 } else {
                     null
                 },
@@ -150,8 +156,8 @@ fun BaseTextField(
                     TextFieldDefaults.contentPaddingWithoutLabel(
                         start = DragonFlyTheme.spacing.small,
                         end = DragonFlyTheme.spacing.small,
-                        top = DragonFlyTheme.spacing.medium,
-                        bottom = DragonFlyTheme.spacing.medium
+                        top = DragonFlyTheme.spacing.large,
+                        bottom = DragonFlyTheme.spacing.small
                     )
                 } else {
                     TextFieldDefaults.contentPaddingWithLabel(
@@ -176,19 +182,6 @@ fun BaseTextField(
 }
 
 @Composable
-private fun placeholder(
-    text: String,
-    style: TextStyle = LocalTextStyle.current,
-    modifier: Modifier = Modifier
-): @Composable () -> Unit = @Composable {
-    Text(
-        text = text,
-        style = style,
-        modifier = modifier
-    )
-}
-
-@Composable
 private fun cursorColor(isError: Boolean): State<Color> {
     return rememberUpdatedState(
         if (isError) {
@@ -206,7 +199,10 @@ fun BaseTextFieldPreview() {
         BaseTextField(
             value = "Some Text",
             onValueChange = {},
-            modifier = Modifier.padding(DragonFlyTheme.spacing.medium)
+            modifier = Modifier
+                .padding(DragonFlyTheme.spacing.medium)
+                .fillMaxWidth()
+                .height(72.dp)
         )
     }
 }
@@ -219,7 +215,26 @@ fun BaseTextFieldPreviewPlaceholder() {
             value = "",
             onValueChange = {},
             placeholder = "Placeholder",
-            modifier = Modifier.padding(DragonFlyTheme.spacing.medium)
+            modifier = Modifier
+                .padding(DragonFlyTheme.spacing.medium)
+                .fillMaxWidth()
+                .height(72.dp)
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun BaseTextFieldPreviewLabel() {
+    DragonFlyTheme {
+        BaseTextField(
+            value = "",
+            onValueChange = {},
+            label = "Placeholder",
+            modifier = Modifier
+                .padding(DragonFlyTheme.spacing.medium)
+                .fillMaxWidth()
+                .height(72.dp)
         )
     }
 }
@@ -233,7 +248,10 @@ fun BaseTextFieldPreviewPlaceholderAndLabel() {
             onValueChange = {},
             placeholder = "Placeholder",
             label = "Label",
-            modifier = Modifier.padding(DragonFlyTheme.spacing.medium)
+            modifier = Modifier
+                .padding(DragonFlyTheme.spacing.medium)
+                .fillMaxWidth()
+                .height(72.dp)
         )
     }
 }

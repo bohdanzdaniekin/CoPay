@@ -1,4 +1,4 @@
-package com.mr.nemo.dragonfly.ui.screen.auth.signup
+package com.mr.nemo.dragonfly.ui.screen.auth.signup.info
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -23,6 +23,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import com.mr.nemo.dragonfly.R
+import com.mr.nemo.dragonfly.domain.entity.auth.signup.InfoItem
 import com.mr.nemo.dragonfly.ui.component.text.TitleText
 import com.mr.nemo.dragonfly.ui.theme.DragonFlyTheme
 
