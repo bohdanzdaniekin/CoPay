@@ -19,12 +19,19 @@
     <string name="enter_security_code">Enter security code</string>
     <string name="information">Information</string>
     <string name="frequently_read_articles">Frequently read articles</string>
+    <string name="remember_me">Remember me</string>
+    <string name="sign_up_page_title_register">Register</string>
+    <string name="sign_up_page_title_verify">Verify</string>
 
     <string name="content_description_swipe_down_for_more">Swipe down for more</string>
     <string name="content_description_navigate_back">Navigate backward</string>
     <string name="content_description_sign_up_faq">Navigate to Sign Up FAQ</string>
 
-    <string name="hint_password">Password</string>
     <string name="hint_email_username">Email / Username</string>
+    <string name="hint_email">Email</string>
+    <string name="hint_username">Username</string>
+    <string name="hint_password">Password</string>
+    <string name="hint_password_confirmation">Re - Password</string>
+    <string name="hint_phone">Phone</string>
 
 </resources>

@@ -5,6 +5,20 @@ import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
+/**
+ *
+ * @property xxxSmall default value - 2.dp
+ * @property xxSmall default value - 4.dp
+ * @property xSmall default value - 8.dp
+ * @property small default value - 12.dp
+ * @property medium default value - 16.dp
+ * @property large default value - 24.dp
+ * @property xLarge default value - 32.dp
+ * @property xxLarge default value - 48.dp
+ * @property xxxLarge default value - 56.dp
+ *
+ * @constructor Create Spacing with [Dp.Unspecified] by default values
+ */
 @Immutable
 data class Spacing(
     val xxxSmall: Dp = Dp.Unspecified,
