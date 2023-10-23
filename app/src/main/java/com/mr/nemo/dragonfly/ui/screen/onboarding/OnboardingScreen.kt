@@ -1,7 +1,6 @@
 package com.mr.nemo.dragonfly.ui.screen.onboarding
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
@@ -9,6 +8,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
@@ -54,8 +54,7 @@ fun OnboardingScreen(
     LaunchedEffect(key1 = state.currentPage) {
         if (state.currentPage != pagerState.currentPage) {
             pagerState.animateScrollToPage(
-                page = state.currentPage,
-                pageOffsetFraction = pagerState.currentPageOffsetFraction
+                page = state.currentPage
             )
         }
     }
@@ -86,12 +85,12 @@ private fun OnboardingScreen(
     val spacing = DragonFlyTheme.spacing
     val typography = DragonFlyTheme.typography
     val colors = DragonFlyTheme.colors
+
     Scaffold(
         topBar = {
             UntitledTopAppBar(
                 onLanguageClicked = { /*TODO*/ },
-                onLogoClicked = { /*TODO*/ },
-                modifier = Modifier.padding(horizontal = spacing.medium)
+                onLogoClicked = { /*TODO*/ }
             )
         },
         containerColor = colors.neutral8,

@@ -1,5 +1,7 @@
 package com.mr.nemo.dragonfly.domain.entity.auth.signup
 
+import com.mr.nemo.dragonfly.ui.component.textfield.drowdown.StringItem
+
 sealed interface SignUpField<T> {
 
     val title: String
@@ -21,6 +23,7 @@ sealed interface SignUpField<T> {
     data class Phone(
         override val title: String,
         override val description: String,
+        val availableCodes: List<StringItem> = emptyList(),
         override val value: PhoneValue = PhoneValue()
     ) : SignUpField<PhoneValue>
 

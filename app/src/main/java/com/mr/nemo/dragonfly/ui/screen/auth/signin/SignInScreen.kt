@@ -83,8 +83,7 @@ private fun SignInScreen(
         topBar = {
             UntitledTopAppBar(
                 onLanguageClicked = { /*TODO*/ },
-                onLogoClicked = { /*TODO*/ },
-                modifier = Modifier.padding(horizontal = spacing.medium)
+                onLogoClicked = { /*TODO*/ }
             )
         },
         containerColor = colors.neutral8,

@@ -1,28 +1,21 @@
 package com.mr.nemo.dragonfly.ui.screen.onboarding
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.mr.nemo.dragonfly.R
 import com.mr.nemo.dragonfly.domain.entity.OnboardingContent
 import com.mr.nemo.dragonfly.ui.entitiy.onboarding.OnboardingScreenEffect
 import com.mr.nemo.dragonfly.ui.entitiy.onboarding.OnboardingScreenEvent
 import com.mr.nemo.dragonfly.ui.entitiy.onboarding.OnboardingScreenState
-import kotlinx.coroutines.channels.Channel
+import com.mr.nemo.dragonfly.ui.base.BaseViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.koin.android.annotation.KoinViewModel
 
 @KoinViewModel
-class OnboardingViewModel : ViewModel() {
+class OnboardingViewModel :
+    BaseViewModel<OnboardingScreenState, OnboardingScreenEffect, OnboardingScreenEvent>() {
 
-    private val _effect = Channel<OnboardingScreenEffect>()
-    val effect = _effect.receiveAsFlow()
-
-    private val _state = MutableStateFlow(OnboardingScreenState())
-    val state = _state.asStateFlow()
+    override val _state = MutableStateFlow(OnboardingScreenState())
 
     init {
         viewModelScope.launch {
@@ -54,7 +47,7 @@ class OnboardingViewModel : ViewModel() {
         }
     }
 
-    fun onEvent(event: OnboardingScreenEvent) {
+    override fun onEvent(event: OnboardingScreenEvent) {
         when (event) {
             OnboardingScreenEvent.OnScrollBackward -> {
                 viewModelScope.launch {
@@ -64,7 +57,7 @@ class OnboardingViewModel : ViewModel() {
                                 currentPage = (state.currentPage - 1).coerceAtLeast(0)
                             )
                         } else {
-                            _effect.send(OnboardingScreenEffect.NavigateBackward())
+                            emitEffect(OnboardingScreenEffect.NavigateBackward())
                             state
                         }
                     }
@@ -78,7 +71,7 @@ class OnboardingViewModel : ViewModel() {
                                 currentPage = state.currentPage + 1
                             )
                         } else {
-                            _effect.send(OnboardingScreenEffect.NavigateForward())
+                            emitEffect(OnboardingScreenEffect.NavigateForward())
                             state
                         }
                     }

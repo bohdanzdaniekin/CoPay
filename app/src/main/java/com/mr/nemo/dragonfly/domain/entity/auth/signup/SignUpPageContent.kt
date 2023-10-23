@@ -2,6 +2,7 @@ package com.mr.nemo.dragonfly.domain.entity.auth.signup
 
 import androidx.annotation.StringRes
 import com.mr.nemo.dragonfly.R
+import com.mr.nemo.dragonfly.ui.entitiy.signup.SignUpVerificationPageState
 
 sealed class SignUpPageContent(
     @StringRes val title: Int,
@@ -12,6 +13,7 @@ sealed class SignUpPageContent(
         val field: SignUpField<T>
     ) : SignUpPageContent(title = R.string.sign_up_page_title_register, isProgressVisible = true)
 
-    data object VerificationPageContent :
-        SignUpPageContent(title = R.string.sign_up_page_title_verify, isProgressVisible = false)
+    data class VerificationPageContent(
+        val state: SignUpVerificationPageState
+    ) : SignUpPageContent(title = R.string.sign_up_page_title_verify, isProgressVisible = false)
 }

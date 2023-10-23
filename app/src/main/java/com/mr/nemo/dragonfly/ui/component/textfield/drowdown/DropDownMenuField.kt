@@ -1,7 +1,7 @@
 package com.mr.nemo.dragonfly.ui.component.textfield.drowdown
 
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.requiredWidth
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material3.DropdownMenuItem
@@ -17,11 +17,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.rememberTextMeasurer
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mr.nemo.dragonfly.ui.component.textfield.BaseTextField
@@ -46,22 +42,10 @@ fun <I : DropDownMenuItem> DropDownMenuField(
         },
         modifier = modifier
     ) {
-        val measurableText = selectedItem?.text ?: placeholder
-        val textMeasurer = rememberTextMeasurer()
-        val density = LocalDensity.current
-        val textLayoutResult =
-            textMeasurer.measure(
-                text = AnnotatedString(measurableText?.ifBlank { "+380" } ?: "+380"),
-                style = textStyle,
-                maxLines = 1,
-                density = density,
-                overflow = TextOverflow.Visible
-            )
-        val textSize = textLayoutResult.size
-
         BaseTextField(
             value = selectedItem?.text.orEmpty(),
             onValueChange = {},
+            modifier = Modifier.menuAnchor(),
             isReadOnly = true,
             textStyle = textStyle,
             placeholder = placeholder,
@@ -73,11 +57,7 @@ fun <I : DropDownMenuItem> DropDownMenuField(
                     Modifier.rotate(if (isExpanded) 180f else 0f)
                 )
             },
-            singleLine = true,
-            modifier = Modifier
-                .menuAnchor()
-                .height(72.dp)
-                .requiredWidth(with(density) { textSize.width.toDp() })
+            singleLine = true
         )
         ExposedDropdownMenu(
             expanded = isExpanded,
@@ -105,7 +85,7 @@ fun <I : DropDownMenuItem> DropDownMenuField(
 
 @Preview(showBackground = true)
 @Composable
-fun DropDownMenuPreview() {
+private fun DropDownMenuPreview() {
     DragonFlyTheme {
         DropDownMenuField(
             items = ('A'..'Z').map { StringItem(it.toString()) },
@@ -118,15 +98,16 @@ fun DropDownMenuPreview() {
 
 @Preview(showBackground = true)
 @Composable
-fun DropDownMenuPreviewSelected() {
+private fun DropDownMenuPreviewSelected() {
     DragonFlyTheme {
         DropDownMenuField(
             items = ('A'..'Z').map { StringItem(it.toString()) },
-            selectedItem = StringItem(""),
+            selectedItem = StringItem("A"),
             onItemSelected = {},
             placeholder = "Select item",
             modifier = Modifier
-                .height(72.dp)
+                .height(120.dp)
+                .width(120.dp)
         )
     }
 }

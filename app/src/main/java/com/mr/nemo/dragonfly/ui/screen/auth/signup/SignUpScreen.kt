@@ -14,6 +14,7 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -62,6 +63,7 @@ fun SignUpScreen(
     val page = state.pages[state.currentPage]
 
     Scaffold(
+        modifier = modifier,
         topBar = {
             Column {
                 CenterAlignedTopAppBar(
@@ -73,23 +75,21 @@ fun SignUpScreen(
                         )
                     },
                     navigationIcon = {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_arrow_back),
-                            contentDescription = stringResource(id = R.string.content_description_navigate_back),
-                            modifier = Modifier.clickable {
-                                onEvent(SignUpScreenEvent.OnBackClicked)
-                            }
-                        )
+                        IconButton(onClick = { onEvent(SignUpScreenEvent.OnBackClicked) }) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.ic_arrow_back),
+                                contentDescription = stringResource(id = R.string.content_description_navigate_back)
+                            )
+                        }
                     },
                     actions = {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_info),
-                            contentDescription = stringResource(id = R.string.content_description_sign_up_faq),
-                            modifier = Modifier.clickable {
-                                onEvent(SignUpScreenEvent.OnInfoClicked)
-                            },
-                            tint = Color.Unspecified
-                        )
+                        IconButton(onClick = { onEvent(SignUpScreenEvent.OnInfoClicked) }) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.ic_info),
+                                contentDescription = stringResource(id = R.string.content_description_sign_up_faq),
+                                tint = Color.Unspecified
+                            )
+                        }
                     },
                     modifier = Modifier.padding(horizontal = spacing.medium)
                 )
@@ -106,14 +106,16 @@ fun SignUpScreen(
                 }
             }
         },
-        containerColor = colors.neutral8,
-        modifier = modifier
+        containerColor = colors.neutral8
     ) { paddingValues ->
         Column(
             modifier = Modifier
                 .padding(paddingValues)
                 .padding(horizontal = spacing.medium)
         ) {
+
+            Spacer(modifier = Modifier.height(spacing.medium))
+
             HorizontalPager(
                 state = rememberPagerState {
                     state.pages.size
@@ -124,22 +126,31 @@ fun SignUpScreen(
                 verticalAlignment = Alignment.Top,
                 userScrollEnabled = false
             ) { page ->
-                when(val currentPage = state.pages[page]) {
+                when (val currentPage = state.pages[page]) {
                     is SignUpPageContent.RegisterPageContent<*> -> {
                         SignUpFieldPage(
                             field = currentPage.field,
-                            onValueChanged = { _, _ -> }
+                            onValueChanged = { field ->
+                                onEvent(
+                                    SignUpScreenEvent.OnFieldUpdated(field)
+                                )
+                            }
                         )
                     }
-                    SignUpPageContent.VerificationPageContent -> {
-
+                    is SignUpPageContent.VerificationPageContent -> {
+                        SignUpVerificationPage(
+                            state = currentPage.state,
+                            onEvent = onEvent
+                        )
                     }
                 }
             }
 
             PrimaryButton(
                 text = stringResource(id = R.string.button_next),
-                onClick = { /*TODO*/ },
+                onClick = {
+                    onEvent(SignUpScreenEvent.OnNextClicked)
+                },
                 enabled = true,
                 modifier = Modifier
                     .fillMaxWidth()
