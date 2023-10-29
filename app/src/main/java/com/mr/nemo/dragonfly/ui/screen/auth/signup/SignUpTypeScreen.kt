@@ -18,7 +18,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mr.nemo.dragonfly.R
-import com.mr.nemo.dragonfly.ui.component.UntitledTopAppBar
+import com.mr.nemo.dragonfly.ui.component.appbar.UntitledTopAppBar
 import com.mr.nemo.dragonfly.ui.component.button.OutlinedButton
 import com.mr.nemo.dragonfly.ui.component.button.PrimaryButton
 import com.mr.nemo.dragonfly.ui.component.text.TitleText

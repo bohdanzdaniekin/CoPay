@@ -2,7 +2,6 @@ package com.mr.nemo.dragonfly.ui.screen.auth.signup
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -11,13 +10,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -31,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mr.nemo.dragonfly.R
 import com.mr.nemo.dragonfly.domain.entity.auth.signup.SignUpPageContent
+import com.mr.nemo.dragonfly.ui.component.appbar.TitledTopAppBar
 import com.mr.nemo.dragonfly.ui.component.button.PrimaryButton
 import com.mr.nemo.dragonfly.ui.entitiy.signup.SignUpScreenEvent
 import com.mr.nemo.dragonfly.ui.entitiy.signup.SignUpScreenState
@@ -66,14 +64,8 @@ fun SignUpScreen(
         modifier = modifier,
         topBar = {
             Column {
-                CenterAlignedTopAppBar(
-                    title = {
-                        Text(
-                            text = stringResource(id = page.title),
-                            style = typography.subtitle2.medium,
-                            color = colors.neutral2
-                        )
-                    },
+                TitledTopAppBar(
+                    title = page.title,
                     navigationIcon = {
                         IconButton(onClick = { onEvent(SignUpScreenEvent.OnBackClicked) }) {
                             Icon(
@@ -90,8 +82,7 @@ fun SignUpScreen(
                                 tint = Color.Unspecified
                             )
                         }
-                    },
-                    modifier = Modifier.padding(horizontal = spacing.medium)
+                    }
                 )
                 AnimatedVisibility(visible = page.isProgressVisible) {
                     LinearProgressIndicator(

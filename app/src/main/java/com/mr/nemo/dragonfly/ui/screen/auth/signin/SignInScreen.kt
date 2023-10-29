@@ -27,7 +27,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mr.nemo.dragonfly.R
-import com.mr.nemo.dragonfly.ui.component.UntitledTopAppBar
+import com.mr.nemo.dragonfly.ui.component.appbar.UntitledTopAppBar
 import com.mr.nemo.dragonfly.ui.component.button.Checkbox
 import com.mr.nemo.dragonfly.ui.component.button.OutlinedButton
 import com.mr.nemo.dragonfly.ui.component.button.PrimaryButton

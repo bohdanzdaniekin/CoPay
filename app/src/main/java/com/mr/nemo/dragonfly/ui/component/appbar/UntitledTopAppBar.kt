@@ -1,4 +1,4 @@
-package com.mr.nemo.dragonfly.ui.component
+package com.mr.nemo.dragonfly.ui.component.appbar
 
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -49,7 +49,7 @@ fun UntitledTopAppBar(
 
 @Preview
 @Composable
-fun UntitledTopAppBarPreview() {
+private fun UntitledTopAppBarPreview() {
     DragonFlyTheme {
         UntitledTopAppBar(
             onLanguageClicked = {},

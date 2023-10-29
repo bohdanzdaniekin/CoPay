@@ -8,7 +8,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
@@ -18,7 +17,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
 import com.mr.nemo.dragonfly.R
 import com.mr.nemo.dragonfly.domain.entity.OnboardingContent
-import com.mr.nemo.dragonfly.ui.component.UntitledTopAppBar
+import com.mr.nemo.dragonfly.ui.component.appbar.UntitledTopAppBar
 import com.mr.nemo.dragonfly.ui.entitiy.onboarding.OnboardingScreenEffect
 import com.mr.nemo.dragonfly.ui.entitiy.onboarding.OnboardingScreenEvent
 import com.mr.nemo.dragonfly.ui.entitiy.onboarding.OnboardingScreenState
