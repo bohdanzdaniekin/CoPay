@@ -3,39 +3,30 @@
 package com.mr.nemo.dragonfly.ui.component.textfield
 
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.interaction.collectIsFocusedAsState
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.LocalTextStyle
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldColors
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberUpdatedState
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.graphics.takeOrElse
-import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mr.nemo.dragonfly.ui.theme.DragonFlyTheme
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BaseTextField(
     value: String,
@@ -64,176 +55,150 @@ fun BaseTextField(
     visualTransformation: VisualTransformation = VisualTransformation.None,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
-    singleLine: Boolean = false,
+    singleLine: Boolean = true,
     maxLines: Int = if (singleLine) 1 else Int.MAX_VALUE,
     minLines: Int = 1,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() }
 ) {
-    val textColor = textStyle.color.takeOrElse {
-        MaterialTheme.colorScheme.onSurface
-    }
-    val mergedTextStyle = textStyle.merge(TextStyle(color = textColor))
-
-    var isFocused by remember {
-        mutableStateOf(false)
-    }
+    val isFocused by interactionSource.collectIsFocusedAsState()
 
     val mergedPlaceholderTextStyle =
         placeholderTextStyle.merge(TextStyle(color = placeholderTextColor))
+
     val innerLabelTextStyle = if (value.isBlank() && !isFocused) {
         mergedPlaceholderTextStyle
     } else {
         labelTextStyle.merge(TextStyle(labelTextColor))
     }
 
-    BasicTextField(
+    val innerPlaceholder = if (placeholder.isNullOrBlank()) {
+        label ?: " "
+    } else {
+        placeholder
+    }
+
+    OutlinedTextField(
         value = value,
-        modifier = if (label != null) {
-            modifier
-                .semantics(mergeDescendants = true) {}
-                .padding(top = DragonFlyTheme.spacing.xSmall)
-        } else {
-            modifier
-        }
-            .defaultMinSize(
-                minWidth = OutlinedTextFieldDefaults.MinWidth,
-                minHeight = OutlinedTextFieldDefaults.MinHeight
-            )
-            .onFocusChanged { focusState ->
-                isFocused = focusState.isFocused
-            },
         onValueChange = onValueChange,
+        modifier = modifier,
         enabled = isEnabled,
         readOnly = isReadOnly,
-        textStyle = mergedTextStyle,
-        cursorBrush = SolidColor(cursorColor(isError).value),
-        visualTransformation = visualTransformation,
-        keyboardOptions = keyboardOptions,
-        keyboardActions = keyboardActions,
-        interactionSource = interactionSource,
+        textStyle = textStyle,
+        shape = shape,
+        placeholder = @Composable {
+            Text(
+                text = innerPlaceholder,
+                style = mergedPlaceholderTextStyle,
+                maxLines = maxLines
+            )
+        },
+        label = if (!label.isNullOrBlank() && (value.isNotBlank() || innerPlaceholder.isBlank())) {
+            @Composable {
+                Text(
+                    text = label,
+                    style = innerLabelTextStyle,
+                    maxLines = maxLines
+                )
+            }
+        } else {
+            null
+        },
+        leadingIcon = leadingIcon,
+        trailingIcon = trailingIcon,
         singleLine = singleLine,
         maxLines = maxLines,
         minLines = minLines,
-        decorationBox = @Composable { innerTextField ->
-            TextFieldDefaults.DecorationBox(
-                value = value,
-                visualTransformation = visualTransformation,
-                innerTextField = innerTextField,
-                placeholder = if (!placeholder.isNullOrBlank()) {
-                    placeholder(
-                        placeholder,
-                        mergedPlaceholderTextStyle
-                    )
-                } else {
-                    null
-                },
-                label = if (!label.isNullOrBlank()) {
-                    placeholder(
-                        label,
-                        innerLabelTextStyle,
-                        modifier = Modifier.padding(bottom = 4.dp)
-                    )
-                } else {
-                    null
-                },
-                leadingIcon = leadingIcon,
-                trailingIcon = trailingIcon,
-                prefix = prefix,
-                suffix = suffix,
-                supportingText = supportingText,
-                singleLine = singleLine,
-                enabled = isEnabled,
-                isError = isError,
-                interactionSource = interactionSource,
-                colors = colors,
-                contentPadding = if (label == null) {
-                    TextFieldDefaults.contentPaddingWithoutLabel(
-                        start = DragonFlyTheme.spacing.small,
-                        end = DragonFlyTheme.spacing.small,
-                        top = DragonFlyTheme.spacing.medium,
-                        bottom = DragonFlyTheme.spacing.medium
-                    )
-                } else {
-                    TextFieldDefaults.contentPaddingWithLabel(
-                        start = DragonFlyTheme.spacing.small,
-                        end = DragonFlyTheme.spacing.small,
-                        top = DragonFlyTheme.spacing.medium,
-                        bottom = DragonFlyTheme.spacing.medium
-                    )
-                },
-                container = {
-                    OutlinedTextFieldDefaults.ContainerBox(
-                        enabled = isEnabled,
-                        isError = isError,
-                        interactionSource = interactionSource,
-                        colors = colors,
-                        shape = shape
-                    )
-                }
-            )
-        }
-    )
-}
-
-@Composable
-private fun placeholder(
-    text: String,
-    style: TextStyle = LocalTextStyle.current,
-    modifier: Modifier = Modifier
-): @Composable () -> Unit = @Composable {
-    Text(
-        text = text,
-        style = style,
-        modifier = modifier
-    )
-}
-
-@Composable
-private fun cursorColor(isError: Boolean): State<Color> {
-    return rememberUpdatedState(
-        if (isError) {
-            MaterialTheme.colorScheme.error
-        } else {
-            MaterialTheme.colorScheme.primary
-        }
+        colors = colors,
+        isError = isError,
+        visualTransformation = visualTransformation,
+        keyboardOptions = keyboardOptions,
+        keyboardActions = keyboardActions,
+        interactionSource = interactionSource
     )
 }
 
 @Preview(showBackground = true)
 @Composable
-fun BaseTextFieldPreview() {
+private fun BaseTextFieldPreview() {
     DragonFlyTheme {
         BaseTextField(
             value = "Some Text",
             onValueChange = {},
-            modifier = Modifier.padding(DragonFlyTheme.spacing.medium)
+            modifier = Modifier
+                .padding(DragonFlyTheme.spacing.medium)
+                .height(72.dp)
+                .fillMaxWidth()
         )
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-fun BaseTextFieldPreviewPlaceholder() {
+private fun BaseTextFieldPreviewPlaceholder() {
     DragonFlyTheme {
         BaseTextField(
             value = "",
             onValueChange = {},
             placeholder = "Placeholder",
-            modifier = Modifier.padding(DragonFlyTheme.spacing.medium)
+            modifier = Modifier
+                .padding(DragonFlyTheme.spacing.medium)
+                .fillMaxWidth()
+                .height(72.dp)
         )
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-fun BaseTextFieldPreviewPlaceholderAndLabel() {
+private fun BaseTextFieldPreviewLabel() {
+    DragonFlyTheme {
+        Row {
+            BaseTextField(
+                value = "",
+                onValueChange = {},
+                modifier = Modifier
+                    .padding(DragonFlyTheme.spacing.medium)
+                    .height(72.dp)
+                    .weight(1f),
+                singleLine = true
+            )
+            BaseTextField(
+                value = "",
+                onValueChange = {},
+                placeholder = "Placeholder",
+                modifier = Modifier
+                    .padding(DragonFlyTheme.spacing.medium)
+                    .height(72.dp)
+                    .weight(1f),
+                singleLine = true
+            )
+            BaseTextField(
+                value = "",
+                onValueChange = {},
+                label = "Placeholder",
+                modifier = Modifier
+                    .padding(DragonFlyTheme.spacing.medium)
+                    .height(72.dp)
+                    .weight(1f),
+                singleLine = true
+            )
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun BaseTextFieldPreviewPlaceholderAndLabel() {
     DragonFlyTheme {
         BaseTextField(
             value = "Some text",
             onValueChange = {},
             placeholder = "Placeholder",
             label = "Label",
-            modifier = Modifier.padding(DragonFlyTheme.spacing.medium)
+            modifier = Modifier
+                .padding(DragonFlyTheme.spacing.medium)
+                .fillMaxWidth()
+                .height(72.dp)
         )
     }
 }

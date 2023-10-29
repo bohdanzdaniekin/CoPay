@@ -1,29 +1,28 @@
 package com.mr.nemo.dragonfly.ui.screen.onboarding
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
 import com.mr.nemo.dragonfly.R
 import com.mr.nemo.dragonfly.domain.entity.OnboardingContent
-import com.mr.nemo.dragonfly.ui.component.UntitledTopAppBar
+import com.mr.nemo.dragonfly.ui.component.appbar.UntitledTopAppBar
 import com.mr.nemo.dragonfly.ui.entitiy.onboarding.OnboardingScreenEffect
 import com.mr.nemo.dragonfly.ui.entitiy.onboarding.OnboardingScreenEvent
 import com.mr.nemo.dragonfly.ui.entitiy.onboarding.OnboardingScreenState
 import com.mr.nemo.dragonfly.ui.theme.DragonFlyTheme
-import kotlinx.coroutines.flow.collectLatest
+import com.mr.nemo.dragonfly.ui.utils.extension.collectAsEffect
 import org.koin.androidx.compose.koinViewModel
 import kotlin.math.absoluteValue
 
@@ -32,18 +31,17 @@ import kotlin.math.absoluteValue
 fun OnboardingScreen(
     viewModel: OnboardingViewModel = koinViewModel()
 ) {
-    val state by viewModel.state.collectAsState()
+
+    val state by viewModel.state.collectAsStateWithLifecycle()
     val lifecycleOwner = LocalLifecycleOwner.current
 
-    LaunchedEffect(lifecycleOwner) {
-        viewModel.effect.flowWithLifecycle(lifecycleOwner.lifecycle).collectLatest { effect ->
-            when (effect) {
-                is OnboardingScreenEffect.NavigateForward -> {
-                    // TODO
-                }
-                is OnboardingScreenEffect.NavigateBackward -> {
-                    // TODO
-                }
+    viewModel.effect.collectAsEffect { effect ->
+        when (effect) {
+            is OnboardingScreenEffect.NavigateForward -> {
+                // TODO
+            }
+            is OnboardingScreenEffect.NavigateBackward -> {
+                // TODO
             }
         }
     }
@@ -52,17 +50,12 @@ fun OnboardingScreen(
         state.pages.size
     }
     // FIXME: Fix animation on fast page scrolling
-    LaunchedEffect(key1 = state) {
-        snapshotFlow(state::currentPage)
-            .flowWithLifecycle(lifecycleOwner.lifecycle)
-            .collect { currentPage ->
-                if (currentPage != pagerState.currentPage) {
-                    pagerState.animateScrollToPage(
-                        page = currentPage,
-                        pageOffsetFraction = pagerState.currentPageOffsetFraction
-                    )
-                }
-            }
+    LaunchedEffect(key1 = state.currentPage) {
+        if (state.currentPage != pagerState.currentPage) {
+            pagerState.animateScrollToPage(
+                page = state.currentPage
+            )
+        }
     }
     LaunchedEffect(key1 = pagerState) {
         snapshotFlow(pagerState::currentPage)
@@ -91,12 +84,12 @@ private fun OnboardingScreen(
     val spacing = DragonFlyTheme.spacing
     val typography = DragonFlyTheme.typography
     val colors = DragonFlyTheme.colors
+
     Scaffold(
         topBar = {
             UntitledTopAppBar(
                 onLanguageClicked = { /*TODO*/ },
-                onLogoClicked = { /*TODO*/ },
-                modifier = Modifier.padding(horizontal = spacing.medium)
+                onLogoClicked = { /*TODO*/ }
             )
         },
         containerColor = colors.neutral8,

@@ -24,6 +24,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
@@ -177,12 +178,19 @@ fun OnboardingPage(
                     },
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                val buttonText = if (currentPage == pageCount - 1) {
-                    R.string.button_get_started
-                } else {
-                    R.string.button_next
+                val buttonText by remember {
+                    derivedStateOf {
+                        if (currentPage == pageCount - 1) {
+                            R.string.button_get_started
+                        } else {
+                            R.string.button_next
+                        }
+                    }
                 }
-                if (currentPage > 0) {
+                val isBackVisible by remember {
+                    derivedStateOf { currentPage > 0 }
+                }
+                if (isBackVisible) {
                     IconButton(onClick = onBackClicked) {
                         Icon(
                             imageVector = Icons.Default.ArrowBack,
@@ -221,5 +229,3 @@ fun OnboardingPagePreview(
         )
     }
 }
-
-enum class DragAnchor { Start, End }

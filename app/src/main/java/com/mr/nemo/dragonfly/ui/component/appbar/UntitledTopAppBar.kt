@@ -1,9 +1,9 @@
-package com.mr.nemo.dragonfly.ui.component
+package com.mr.nemo.dragonfly.ui.component.appbar
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -27,29 +27,29 @@ fun UntitledTopAppBar(
         title = {},
         modifier = modifier,
         navigationIcon = {
-            Icon(
-                painter = painterResource(id = R.drawable.ic_logo),
-                contentDescription = stringResource(id = R.string.app_name),
-                modifier = Modifier
-                    .size(24.dp)
-                    .clickable(onClick = onLogoClicked)
-            )
+            IconButton(onClick = onLogoClicked) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_logo),
+                    contentDescription = stringResource(id = R.string.app_name),
+                    modifier = Modifier.size(24.dp)
+                )
+            }
         },
         actions = {
-            Icon(
-                imageVector = DragonFlyIcons.Translate,
-                contentDescription = stringResource(id = R.string.app_name),
-                modifier = Modifier
-                    .size(24.dp)
-                    .clickable(onClick = onLanguageClicked)
-            )
+            IconButton(onClick = onLanguageClicked) {
+                Icon(
+                    imageVector = DragonFlyIcons.Translate,
+                    contentDescription = stringResource(id = R.string.app_name),
+                    modifier = Modifier.size(24.dp)
+                )
+            }
         }
     )
 }
 
 @Preview
 @Composable
-fun UntitledTopAppBarPreview() {
+private fun UntitledTopAppBarPreview() {
     DragonFlyTheme {
         UntitledTopAppBar(
             onLanguageClicked = {},
