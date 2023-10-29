@@ -82,7 +82,8 @@ fun SignUpScreen(
                                 tint = Color.Unspecified
                             )
                         }
-                    }
+                    },
+                    modifier = Modifier.padding(horizontal = spacing.medium)
                 )
                 AnimatedVisibility(visible = page.isProgressVisible) {
                     LinearProgressIndicator(

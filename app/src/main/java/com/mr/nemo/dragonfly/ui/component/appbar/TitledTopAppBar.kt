@@ -20,8 +20,8 @@ fun TitledTopAppBar(
     modifier: Modifier = Modifier,
     titleTextStyle: TextStyle = DragonFlyTheme.typography.subtitle2.medium,
     titleTextColor: Color = DragonFlyTheme.colors.neutral2,
-    navigationIcon: @Composable () -> Unit,
-    actions: @Composable RowScope.() -> Unit
+    navigationIcon: @Composable () -> Unit = {},
+    actions: @Composable RowScope.() -> Unit = {}
 ) {
     CenterAlignedTopAppBar(
         title = {

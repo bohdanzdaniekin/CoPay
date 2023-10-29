@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -28,6 +27,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mr.nemo.dragonfly.R
 import com.mr.nemo.dragonfly.domain.entity.auth.signup.InfoItem
+import com.mr.nemo.dragonfly.ui.component.appbar.TitledTopAppBar
 import com.mr.nemo.dragonfly.ui.component.text.TitleText
 import com.mr.nemo.dragonfly.ui.entitiy.signup.info.SignUpInfoScreenEvent
 import com.mr.nemo.dragonfly.ui.entitiy.signup.info.SignUpInfoScreenState
@@ -58,20 +58,10 @@ fun SignUpInfoScreen(
     val colors = DragonFlyTheme.colors
     Scaffold(
         topBar = {
-            CenterAlignedTopAppBar(
-                title = {
-                    Text(
-                        text = stringResource(R.string.information),
-                        style = typography.subtitle2.medium,
-                        color = colors.neutral2
-                    )
-                },
+            TitledTopAppBar(
+                title = stringResource(R.string.information),
                 navigationIcon = {
-                    IconButton(
-                        onClick = {
-                            onEvent(SignUpInfoScreenEvent.OnBackClicked)
-                        }
-                    ) {
+                    IconButton(onClick = { onEvent(SignUpInfoScreenEvent.OnBackClicked) }) {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_arrow_back),
                             contentDescription = stringResource(id = R.string.content_description_navigate_back)
