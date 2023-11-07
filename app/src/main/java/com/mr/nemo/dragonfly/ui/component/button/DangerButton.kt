@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.dp
 import com.mr.nemo.dragonfly.ui.theme.DragonFlyTheme
 
 @Composable
-fun PrimaryButton(
+fun DangerButton(
     text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -28,7 +28,7 @@ fun PrimaryButton(
         enabled = enabled,
         shape = shape,
         colors = ButtonDefaults.buttonColors(
-            containerColor = colors.primary.main,
+            containerColor = colors.danger.main,
             contentColor = colors.neutral8,
             disabledContainerColor = colors.neutral7,
             disabledContentColor = colors.neutral5
@@ -49,10 +49,10 @@ fun PrimaryButton(
 
 @Preview(showBackground = true)
 @Composable
-private fun PrimaryButtonPreview() {
+private fun DangerButtonPreview() {
     DragonFlyTheme {
-        PrimaryButton(
-            text = "Next",
+        DangerButton(
+            text = "Log out",
             onClick = {},
             modifier = Modifier
                 .fillMaxWidth()
@@ -63,10 +63,10 @@ private fun PrimaryButtonPreview() {
 
 @Preview(showBackground = true)
 @Composable
-private fun PrimaryButtonPreviewDisable() {
+private fun DangerButtonPreviewDisable() {
     DragonFlyTheme {
-        PrimaryButton(
-            text = "Next",
+        DangerButton(
+            text = "Log out",
             onClick = {},
             modifier = Modifier
                 .fillMaxWidth()
