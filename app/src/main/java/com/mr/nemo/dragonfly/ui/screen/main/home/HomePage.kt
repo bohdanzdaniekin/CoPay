@@ -31,9 +31,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mr.nemo.dragonfly.R
 import com.mr.nemo.dragonfly.ui.component.AdCard
+import com.mr.nemo.dragonfly.ui.component.TableCell
 import com.mr.nemo.dragonfly.ui.component.text.HideableText
 import com.mr.nemo.dragonfly.ui.theme.DragonFlyTheme
 import com.mr.nemo.dragonfly.ui.theme.shapes
+import com.mr.nemo.dragonfly.ui.utils.extension.format
 
 @Composable
 fun HomePage(
@@ -60,8 +62,8 @@ fun HomePage(
 
         itemsIndexed(
             items = (0..3).toList(),
-        ) {index, item ->
-            CreditCardItem()
+        ) { index, item ->
+            CreditCardItem() // TODO
         }
         item(
             span = { GridItemSpan(2) }
@@ -84,21 +86,91 @@ fun HomePage(
         item(
             span = { GridItemSpan(2) }
         ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_currency),
-                    contentDescription = stringResource(R.string.content_description_currency),
-                    tint = colors.primary.main
-                )
-                Text(
-                    text = stringResource(R.string.currency),
-                    style = typography.subtitle2.medium,
-                    color = colors.neutral2
-                )
+            Column {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Start
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_currency),
+                        contentDescription = stringResource(R.string.content_description_currency),
+                        tint = colors.primary.main
+                    )
+
+                    Spacer(modifier = Modifier.width(spacing.xSmall))
+
+                    Text(
+                        text = stringResource(R.string.currency),
+                        style = typography.subtitle2.medium,
+                        color = colors.neutral2
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(spacing.medium))
+
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .border(
+                            width = 1.dp,
+                            color = colors.neutral7,
+                            shape = shapes.small
+                        )
+                        .padding(vertical = spacing.small)
+                ) {
+                    Row {
+                        TableCell(
+                            text = "Currency", // TODO
+                            weight = 1f,
+                            style = typography.text1.regular,
+                            color = colors.neutral2
+                        )
+                        TableCell(
+                            text = "Price", // TODO
+                            weight = 1f,
+                            style = typography.text1.regular,
+                            color = colors.neutral2
+                        )
+                        TableCell(
+                            text = "Rates", // TODO
+                            weight = 1f,
+                            style = typography.text1.regular,
+                            color = colors.neutral2
+                        )
+                    }
+                    currencies.forEach { currency ->
+                        Row(
+                            Modifier.padding(top = spacing.small)
+                        ) {
+                            TableCell(
+                                text = currency.name,
+                                weight = 1f
+                            )
+                            TableCell(
+                                text = currency.price.format(2),
+                                weight = 1f
+                            )
+                            TableCell(
+                                text = currency.rates.format(2),
+                                weight = 1f
+                            )
+                        }
+                    }
+
+                    TextButton(
+                        onClick = { /*TODO Refresh*/ },
+                        modifier = Modifier.align(Alignment.CenterHorizontally)
+                    ) {
+                        Text(
+                            text = "Updated 1 hour ago", // TODO
+                            style = typography.text2.regular,
+                            color = colors.primary.main
+                        )
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(spacing.medium))
             }
         }
     }
@@ -155,8 +227,8 @@ private fun HomePageHeader(
             AdBanner(
                 title = "Let's connect", // TODO
                 description = "Connect account with marketplace for automatic payment and get \$25 bonus", // TODO
-                onClose = {},
-                onNavigateForward = {},
+                onClose = { /*TODO*/ },
+                onNavigateForward = { /*TODO*/ },
                 modifier = Modifier
                     .fillMaxWidth()
                     .wrapContentHeight()

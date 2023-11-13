@@ -46,7 +46,7 @@ fun CreditCardItem(
                 .clip(shape = shapes.small)
                 .paint(
                     painter = painterResource(
-                        id = R.drawable.bg_debit_card_1
+                        id = R.drawable.bg_debit_card_1 // TODO
                     ),
                     contentScale = ContentScale.Crop
                 )
@@ -62,7 +62,7 @@ fun CreditCardItem(
                     .padding(bottom = spacing.medium, start = spacing.medium)
             ) {
                 Text(
-                    text = "Biancaliza",
+                    text = "Biancaliza", // TODO
                     style = typography.text2.regular,
                     color = colors.neutral8
                 )
@@ -70,7 +70,7 @@ fun CreditCardItem(
                 Spacer(modifier = Modifier.height(spacing.xxSmall))
 
                 Text(
-                    text = "1234 5678 9000 0000",
+                    text = "1234 5678 9000 0000", // TODO
                     style = typography.card,
                     color = colors.neutral8
                 )
@@ -93,7 +93,7 @@ fun CreditCardItem(
             modifier = Modifier.padding(start = spacing.small)
         ) {
             Text(
-                text = "Saving Balance",
+                text = "Saving Balance", // TODO
                 style = typography.caption.regular,
                 color = colors.neutral2
             )
@@ -101,7 +101,7 @@ fun CreditCardItem(
             Spacer(modifier = Modifier.height(spacing.xSmall))
 
             Text(
-                text = "\$ 1,000.00",
+                text = "\$ 1,000.00", // TODO
                 style = typography.subtitle2.medium,
                 color = colors.primary.main
             )

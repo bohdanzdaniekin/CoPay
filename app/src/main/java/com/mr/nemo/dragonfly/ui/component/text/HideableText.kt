@@ -1,5 +1,10 @@
 package com.mr.nemo.dragonfly.ui.component.text
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material.icons.Icons
@@ -22,6 +27,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.mr.nemo.dragonfly.R
 import com.mr.nemo.dragonfly.ui.theme.DragonFlyTheme
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun HideableText(
     text: String,
@@ -40,18 +46,27 @@ fun HideableText(
         var isVisible by rememberSaveable {
             mutableStateOf(true)
         }
+        val textInternal = if (isVisible) {
+            text
+        } else {
+            text
+                .map { char -> if (char.isDigit()) maskChar else char }
+                .joinToString("")
+        }
 
-        Text(
-            text = if (isVisible) {
-                text
-            } else {
-                text
-                    .map { char -> if (char.isDigit()) maskChar else char }
-                    .joinToString("")
-            },
-            style = textStyle,
-            color = textColor
-        )
+        AnimatedContent(
+            targetState = textInternal,
+            label = "",
+            transitionSpec = {
+                fadeIn() togetherWith fadeOut()
+            }
+        ) { targetText ->
+            Text(
+                text = targetText,
+                style = textStyle,
+                color = textColor
+            )
+        }
 
         IconButton(onClick = { isVisible = !isVisible }) {
             Icon(
