@@ -17,7 +17,7 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.itemsIndexed
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -54,16 +54,19 @@ fun HomePage(
         horizontalArrangement = Arrangement.spacedBy(spacing.xSmall),
         verticalArrangement = Arrangement.spacedBy(spacing.xSmall)
     ) {
+
         item(
             span = { GridItemSpan(2) }
         ) {
             HomePageHeader(isAdVisible)
         }
 
-        itemsIndexed(
+        items(
             items = (0..3).toList(),
-        ) { index, item ->
-            CreditCardItem() // TODO
+        ) { item ->
+            CreditCardItem(
+
+            ) // TODO
         }
         item(
             span = { GridItemSpan(2) }
@@ -71,7 +74,7 @@ fun HomePage(
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center
+                horizontalArrangement = Arrangement.SpaceAround
             ) {
                 TextButton(onClick = { /*TODO*/ }) {
                     Text(

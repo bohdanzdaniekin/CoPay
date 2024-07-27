@@ -19,6 +19,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
@@ -36,18 +40,26 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.mr.nemo.dragonfly.R
 import com.mr.nemo.dragonfly.ui.theme.DragonFlyTheme
+import com.mr.nemo.dragonfly.ui.theme.color.AdBackground
+import com.mr.nemo.dragonfly.ui.theme.color.AdGradient
 import com.mr.nemo.dragonfly.ui.utils.extension.nextFloat
 import kotlin.random.Random
 
 @Composable
 fun AdCard(
     modifier: Modifier = Modifier,
-    backgroundColor: Color = Color(0xFFE2D8FF),
-    gradientColor: Color = Color(0xFFC5B1FF),
+    backgroundColor: Color = AdBackground,
+    gradientColor: Color = AdGradient,
     gradientRectanglesCornerRadius: Dp = 16.dp,
     rectCount: Int = 7,
     content: @Composable (BoxScope.() -> Unit)
 ) {
+    var topLeft by remember {
+        mutableStateOf(Offset.Unspecified)
+    }
+    var rectSize by remember {
+        mutableStateOf(Size.Unspecified)
+    }
     Box(
         modifier = modifier
             .background(
@@ -60,7 +72,7 @@ fun AdCard(
                     rotate(
                         degrees = -degrees.random()
                     ) {
-                        val topLeft = Offset(
+                        topLeft = Offset(
                             x = Random.nextFloat(
                                 -size.width / 5f,
                                 size.width
@@ -70,23 +82,25 @@ fun AdCard(
                                 size.height
                             )
                         )
-                        val rectSize = Size(
+                        rectSize = Size(
                             width = size.width / heights.random() - topLeft.x,
                             height = size.height / widths.random() - topLeft.y
                         )
-                        drawRoundRect(
-                            brush = Brush.linearGradient(
-                                0.0f to Color.Transparent,
-                                1.0f to gradientColor,
-                                tileMode = TileMode.Decal
-                            ),
-                            topLeft = topLeft,
-                            size = rectSize,
-                            cornerRadius = CornerRadius(
-                                gradientRectanglesCornerRadius.toPx(),
-                                gradientRectanglesCornerRadius.toPx()
+                        if (topLeft != Offset.Unspecified && size != Size.Unspecified) {
+                            drawRoundRect(
+                                brush = Brush.linearGradient(
+                                    0.0f to Color.Transparent,
+                                    1.0f to gradientColor,
+                                    tileMode = TileMode.Decal
+                                ),
+                                topLeft = topLeft,
+                                size = rectSize,
+                                cornerRadius = CornerRadius(
+                                    gradientRectanglesCornerRadius.toPx(),
+                                    gradientRectanglesCornerRadius.toPx()
+                                )
                             )
-                        )
+                        }
                     }
                 }
             },

@@ -2,20 +2,20 @@ package com.mr.nemo.dragonfly.ui.screen.onboarding
 
 import com.mr.nemo.dragonfly.R
 import com.mr.nemo.dragonfly.domain.entity.OnboardingContent
+import com.mr.nemo.dragonfly.ui.base.BaseViewModel
 import com.mr.nemo.dragonfly.ui.entitiy.onboarding.OnboardingScreenEffect
 import com.mr.nemo.dragonfly.ui.entitiy.onboarding.OnboardingScreenEvent
 import com.mr.nemo.dragonfly.ui.entitiy.onboarding.OnboardingScreenState
-import com.mr.nemo.dragonfly.ui.base.BaseViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import org.koin.android.annotation.KoinViewModel
 
-@KoinViewModel
 class OnboardingViewModel :
     BaseViewModel<OnboardingScreenState, OnboardingScreenEffect, OnboardingScreenEvent>() {
 
     override val _state = MutableStateFlow(OnboardingScreenState())
+    val state = _state.asStateFlow()
 
     init {
         viewModelScope.launch {

@@ -27,7 +27,6 @@ abstract class BaseViewModel<State : UiState, Effect : UiEffect, Event : UiEvent
     val effect = _effect.receiveAsFlow()
 
     abstract val _state: MutableStateFlow<State>
-    val state = _state.asStateFlow()
 
     protected fun emitEffect(effect: Effect) {
         viewModelScope.launch {

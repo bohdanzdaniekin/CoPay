@@ -1,6 +1,5 @@
-@Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
-    alias(libs.plugins.com.android.application)
+    alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.ksp)
@@ -54,18 +53,11 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.3"
+        kotlinCompilerExtensionVersion = "1.5.13"
     }
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
-        }
-    }
-    applicationVariants.configureEach {
-        kotlin.sourceSets {
-            getByName(name) {
-                kotlin.srcDir("build/generated/ksp/${name}/kotlin")
-            }
         }
     }
 }
@@ -89,12 +81,9 @@ dependencies {
     implementation(libs.utils.coil)
 
     implementation(libs.utils.koin.bom)
+    implementation(libs.utils.koin.core)
     implementation(libs.utils.koin.android)
     implementation(libs.utils.koin.compose)
-
-    implementation(libs.utils.koin.annotations.bom)
-    implementation(libs.utils.koin.annotations)
-    ksp(libs.utils.koin.compiler)
 
     debugImplementation(libs.ui.tooling)
     debugImplementation(libs.ui.test.manifest)

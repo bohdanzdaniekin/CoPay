@@ -73,4 +73,5 @@ val colorScheme = ColorScheme(
     neutral8 = Color(0xFFFFFFFF)
 )
 
-
+val AdBackground = Color(0xFFE2D8FF)
+val AdGradient = Color(0xFFC5B1FF)
