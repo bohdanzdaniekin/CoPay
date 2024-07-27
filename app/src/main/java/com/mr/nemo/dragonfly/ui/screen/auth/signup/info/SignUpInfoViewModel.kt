@@ -5,13 +5,14 @@ import com.mr.nemo.dragonfly.ui.entitiy.signup.info.SignUpInfoScreenEffect
 import com.mr.nemo.dragonfly.ui.entitiy.signup.info.SignUpInfoScreenEvent
 import com.mr.nemo.dragonfly.ui.entitiy.signup.info.SignUpInfoScreenState
 import kotlinx.coroutines.flow.MutableStateFlow
-import org.koin.android.annotation.KoinViewModel
+import kotlinx.coroutines.flow.asStateFlow
 
-@KoinViewModel
 class SignUpInfoViewModel :
     BaseViewModel<SignUpInfoScreenState, SignUpInfoScreenEffect, SignUpInfoScreenEvent>() {
 
     override val _state = MutableStateFlow(SignUpInfoScreenState())
+    val state = _state.asStateFlow()
+
     override fun onEvent(event: SignUpInfoScreenEvent) {
         when (event) {
             else -> Unit

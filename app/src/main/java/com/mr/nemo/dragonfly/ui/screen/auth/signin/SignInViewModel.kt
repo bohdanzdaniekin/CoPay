@@ -1,18 +1,18 @@
 package com.mr.nemo.dragonfly.ui.screen.auth.signin
 
+import com.mr.nemo.dragonfly.ui.base.BaseViewModel
 import com.mr.nemo.dragonfly.ui.entitiy.signin.SignInScreenEffect
 import com.mr.nemo.dragonfly.ui.entitiy.signin.SignInScreenEvent
 import com.mr.nemo.dragonfly.ui.entitiy.signin.SignInScreenState
-import com.mr.nemo.dragonfly.ui.base.BaseViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import org.koin.android.annotation.KoinViewModel
 
-@KoinViewModel
 class SignInViewModel : BaseViewModel<SignInScreenState, SignInScreenEffect, SignInScreenEvent>() {
 
     override val _state = MutableStateFlow(SignInScreenState())
+    val state = _state.asStateFlow()
 
     override fun onEvent(event: SignInScreenEvent) {
         when (event) {

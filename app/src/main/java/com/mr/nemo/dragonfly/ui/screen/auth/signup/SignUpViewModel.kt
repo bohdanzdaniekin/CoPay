@@ -12,12 +12,12 @@ import com.mr.nemo.dragonfly.ui.entitiy.signup.SignUpScreenState
 import com.mr.nemo.dragonfly.ui.entitiy.signup.SignUpVerificationPageEvent
 import com.mr.nemo.dragonfly.ui.entitiy.signup.SignUpVerificationPageState
 import kotlinx.coroutines.flow.MutableStateFlow
-import org.koin.android.annotation.KoinViewModel
+import kotlinx.coroutines.flow.asStateFlow
 
-@KoinViewModel
 class SignUpViewModel : BaseViewModel<SignUpScreenState, SignUpScreenEffect, SignUpScreenEvent>() {
 
     override val _state = MutableStateFlow(SignUpScreenState())
+    val state = _state.asStateFlow()
 
     override fun onEvent(event: SignUpScreenEvent) {
         when (event) {

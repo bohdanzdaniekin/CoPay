@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Stable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -23,10 +24,20 @@ import com.mr.nemo.dragonfly.R
 import com.mr.nemo.dragonfly.ui.component.CardTitledLogo
 import com.mr.nemo.dragonfly.ui.theme.DragonFlyTheme
 
+@Stable
+@JvmInline
+value class CardNumber(val number: String)
+
 @Composable
 fun CreditCardItem(
+    /*username: String,
+    cardNumber: CardNumber,
+    pocketName: String,
+    currency: String,
+    amount: Double,*/
     modifier: Modifier = Modifier
 ) {
+
     val shapes = DragonFlyTheme.shapes
     val spacing = DragonFlyTheme.spacing
     val typography = DragonFlyTheme.typography
@@ -84,7 +95,6 @@ fun CreditCardItem(
                 )
 
                 Spacer(modifier = Modifier.height(spacing.small))
-
             }
         }
         Spacer(modifier = Modifier.height(spacing.xSmall))
