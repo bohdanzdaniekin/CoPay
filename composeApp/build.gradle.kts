@@ -30,6 +30,23 @@ kotlin {
             isStatic = true
         }
     }
+
+    val osName = System.getProperty("os.name")
+    val targetOs = when {
+        osName == "Mac OS X" -> "macos"
+        osName.startsWith("Win") -> "windows"
+        osName.startsWith("Linux") -> "linux"
+        else -> error("Unsupported OS: $osName")
+    }
+
+    val targetArch = when (val osArch = System.getProperty("os.arch")) {
+        "x86_64", "amd64" -> "x64"
+        "aarch64" -> "arm64"
+        else -> error("Unsupported arch: $osArch")
+    }
+
+    val version = "0.8.10"
+    val target = "${targetOs}-${targetArch}"
     
     sourceSets {
         val desktopMain by getting
@@ -38,12 +55,13 @@ kotlin {
             implementation(compose.preview)
             implementation(libs.activity.compose)
             implementation(libs.lifecycle.runtime.compose)
-            implementation(libs.lifecycle.runtime.ktx)
 
             implementation(libs.utils.koin.android)
             implementation(libs.utils.koin.androidx.compose)
         }
         commonMain.dependencies {
+            implementation(libs.kotlinx.coroutines.core)
+
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.material3)
@@ -51,6 +69,9 @@ kotlin {
             implementation(compose.ui)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
+
+            implementation(libs.lifecycle.common)
+            implementation(libs.lifecycle.viewmodel)
 
             api(libs.utils.koin.core)
             implementation(libs.utils.koin.compose)
@@ -61,7 +82,13 @@ kotlin {
             implementation(libs.utils.coil.mp)
         }
         desktopMain.dependencies {
+            implementation(libs.kotlinx.coroutines.swing)
+
+            // This is a workaround for org.jetbrains.skiko.LibraryLoadException: Cannot find libskiko-macos-arm64.dylib
+            //noinspection UseTomlInstead
+            implementation("org.jetbrains.skiko:skiko-awt-runtime-$target:$version")
             implementation(compose.desktop.currentOs)
+            implementation(libs.lifecycle.runtime.compose)
         }
     }
 }
