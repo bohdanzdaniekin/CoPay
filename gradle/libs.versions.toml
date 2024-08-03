@@ -3,8 +3,10 @@ android-compileSdk = "34"
 android-minSdk = "24"
 android-targetSdk = "34"
 
-agp = "8.2.2"
+agp = "8.3.2"
 kotlin="2.0.0"
+kotlin-jvm = "2.0.0"
+kotlinx-coroutines = "1.9.0-RC"
 ksp = "2.0.0-1.0.23"
 
 compose-plugin = "1.6.11"
@@ -24,17 +26,19 @@ koinCompose = "1.2.0-Beta4"
 espresso-core = "3.6.1"
 androidx-test-junit = "1.2.1"
 junit = "4.13.2"
-jetbrainsKotlinJvm = "1.9.0"
 
 [libraries]
 desugaring = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugaring" }
+
+kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
+kotlinx-coroutines-swing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-swing", version.ref = "kotlinx-coroutines" }
 
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
 
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }
 activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activity-compose" }
-lifycycle-viemodel = { module = "androidx.lifecycle:lifecycle-viewmodel", version.ref = "lifecycle"}
-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycle" }
+lifecycle-common = { module = "androidx.lifecycle:lifecycle-common", version.ref = "lifecycle" }
+lifecycle-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel" ,version.ref = "lifecycle"}
 lifecycle-runtime-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "lifecycle" }
 
 ui = { group = "androidx.compose.ui", name = "ui" }
@@ -72,4 +76,4 @@ jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose-plugin
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 ksp = { id ="com.google.devtools.ksp", version.ref = "ksp" }
-jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrainsKotlinJvm" }
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin-jvm" }
