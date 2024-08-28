@@ -36,8 +36,8 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 import ui.component.appbar.TitledTopAppBar
 import ui.component.text.TitleText
-import ui.entitiy.signup.info.SignUpInfoScreenEvent
-import ui.entitiy.signup.info.SignUpInfoScreenState
+import ui.entitiy.auth.signup.info.SignUpInfoScreenEvent
+import ui.entitiy.auth.signup.info.SignUpInfoScreenState
 import ui.theme.DragonFlyTheme
 import utils.extensions.collectAsStateWithLifecycle
 

@@ -1,6 +1,6 @@
 package domain.entity.auth.signup
 
-import ui.entitiy.signup.SignUpVerificationPageState
+import ui.entitiy.auth.signup.SignUpVerificationPageState
 
 sealed class SignUpPageContent(
     open val title: String,

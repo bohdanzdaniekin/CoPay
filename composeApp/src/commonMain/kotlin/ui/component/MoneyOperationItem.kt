@@ -1,16 +1,17 @@
 package ui.screen.main.home
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.unit.dp
 import dragonfly.composeapp.generated.resources.Res
 import dragonfly.composeapp.generated.resources.ic_money_send
 import dragonfly.composeapp.generated.resources.send
@@ -28,26 +29,28 @@ fun MoneyOperationItem(
     verticalArrangement: Arrangement.Vertical =
         Arrangement.spacedBy(DragonFlyTheme.spacing.small)
 ) {
-    Column(
-        modifier = modifier
-            .clip(DragonFlyTheme.shapes.extraSmall)
-            .clickable(
-                onClick = onClick
-            ),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = verticalArrangement,
+    OutlinedButton(
+        modifier = modifier,
+        onClick = onClick,
+        border = null,
+        contentPadding = PaddingValues(vertical = 8.dp, horizontal = 12.dp)
     ) {
-        Icon(
-            painter = icon,
-            contentDescription = text,
-            tint = Color.Unspecified
-        )
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = verticalArrangement,
+        ) {
+            Icon(
+                painter = icon,
+                contentDescription = text,
+                tint = Color.Unspecified
+            )
 
-        Text(
-            text = text,
-            style = DragonFlyTheme.typography.text2.regular,
-            color = DragonFlyTheme.colors.neutral2
-        )
+            Text(
+                text = text,
+                style = DragonFlyTheme.typography.text2.regular,
+                color = DragonFlyTheme.colors.neutral2
+            )
+        }
     }
 }
 

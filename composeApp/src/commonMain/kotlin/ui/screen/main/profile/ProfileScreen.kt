@@ -15,15 +15,13 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowForwardIos
+import androidx.compose.material.icons.automirrored.filled.ArrowForwardIos
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.Settings
-import androidx.compose.material3.Divider
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
-import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -31,6 +29,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
+import cafe.adriel.voyager.core.screen.Screen
 import coil3.compose.rememberAsyncImagePainter
 import dragonfly.composeapp.generated.resources.Res
 import dragonfly.composeapp.generated.resources.content_description_go_to
@@ -42,8 +41,21 @@ import ui.theme.DragonFlyTheme
 private const val PICTURE_URL =
     "https://static.wikia.nocookie.net/vsbattles/images/4/48/DE5FF9F5-8823-43AA-8943-BF7099FB6DB7.jpeg/revision/latest?cb=20180407152631"
 
+class ProfileScreen : Screen {
+
+        @Composable
+        override fun Content() {
+            ProfileScreenContent(
+                image = PICTURE_URL,
+                fullName = "Ovuvuevuevue Enyetuenwuevue Ugbemugbem Osas",
+                membership = "Silver members",
+                modifier = Modifier.fillMaxHeight()
+            )
+        }
+}
+
 @Composable
-fun ProfilePage(
+fun ProfileScreenContent(
     image: Any?,
     fullName: String,
     membership: String,
@@ -164,7 +176,7 @@ fun ProfileSectionItem(
         }
         IconButton(onClick = onClick) {
             Icon(
-                imageVector = Icons.Default.ArrowForwardIos,
+                imageVector = Icons.AutoMirrored.Filled.ArrowForwardIos,
                 contentDescription = stringResource(resource = Res.string.content_description_go_to, title),
                 tint = DragonFlyTheme.colors.neutral6
             )
@@ -176,7 +188,7 @@ fun ProfileSectionItem(
 @Composable
 private fun ProfilePagePreview() {
     DragonFlyTheme {
-        ProfilePage(
+        ProfileScreenContent(
             image = PICTURE_URL,
             fullName = "Ovuvuevuevue Enyetuenwuevue Ugbemugbem Osas",
             membership = "Silver members",

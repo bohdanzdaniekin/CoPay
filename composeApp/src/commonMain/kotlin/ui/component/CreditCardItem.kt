@@ -76,7 +76,7 @@ fun CreditCardItem(
                     .padding(bottom = spacing.medium, start = spacing.medium)
             ) {
                 Text(
-                    text = "Biancaliza", // TODO
+                    text = "Bianca Liza", // TODO
                     style = typography.text2.regular,
                     color = colors.neutral8
                 )

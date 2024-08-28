@@ -8,4 +8,11 @@ data class SecurityCodeState(
     val secondDigit: String = "",
     val thirdDigit: String = "",
     val fourthDigit: String = ""
-)
+) {
+
+    val isFilled: Boolean
+        get() = firstDigit.isNotBlank()
+            && secondDigit.isNotBlank()
+            && thirdDigit.isNotBlank()
+            && fourthDigit.isNotBlank()
+}

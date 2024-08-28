@@ -1,4 +1,4 @@
-package ui.entitiy.signup.info
+package ui.entitiy.auth.signup.info
 
 import domain.entity.auth.signup.InfoItem
 import ui.entitiy.core.UiEvent

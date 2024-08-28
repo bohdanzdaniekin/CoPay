@@ -1,8 +1,8 @@
 package ui.screen.auth.signin
 
-import ui.entitiy.signin.SignInScreenEffect
-import ui.entitiy.signin.SignInScreenEvent
-import ui.entitiy.signin.SignInScreenState
+import ui.entitiy.auth.signin.SignInScreenEffect
+import ui.entitiy.auth.signin.SignInScreenEvent
+import ui.entitiy.auth.signin.SignInScreenState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
