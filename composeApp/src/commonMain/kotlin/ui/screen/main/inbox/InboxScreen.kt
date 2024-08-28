@@ -12,6 +12,7 @@ import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.TabRowDefaults
+import androidx.compose.material3.TabRowDefaults.SecondaryIndicator
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -23,15 +24,86 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import cafe.adriel.voyager.core.screen.Screen
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import ui.entitiy.main.inbox.InboxPageTab
 import ui.screen.main.inbox.notification.NotificationMessage
 import ui.screen.main.inbox.notification.NotificationTab
 import ui.theme.DragonFlyTheme
 
+class InboxScreen : Screen {
+
+    @Composable
+    override fun Content() {
+        val tabs = InboxPageTab.values { tab ->
+            when (tab) {
+                InboxPageTab.Inbox::class -> {
+                    "Inbox"
+                }
+                InboxPageTab.Notification::class -> {
+                    "Notification"
+                }
+                else -> throw IllegalStateException()
+            }
+        }
+        var selectedTab by remember {
+            mutableStateOf(tabs.first())
+        }
+        InboxScreenContent(
+            tabs = tabs,
+            selectedTab = selectedTab,
+            onTabSelected = { tab ->
+                selectedTab = tab
+            }
+        ) { tab ->
+            when (tab) {
+                is InboxPageTab.Inbox -> {
+                    InboxTab(
+                        messages = listOf(
+                            InboxMessage(
+                                title = "Investment just got easier",
+                                subtitle = "Investing in a bank is one of the common and safe choices for beginners " +
+                                    "who want to start their investment journey. This article will provide a short guide " +
+                                    "to getting started investing in banks, covering some of the investment products " +
+                                    "offered by banks and tips for getting started.",
+                                icon = Icons.Outlined.Notifications
+                            ),
+                            InboxMessage(
+                                title = "Tips for safe foreign transactions",
+                                subtitle = "Choose the Right Transfer Method:\n" +
+                                    "There are several transfer methods that can be used, such as bank transfers, " +
+                                    "electronic transfers, or using money transfer services such as PayPal or " +
+                                    "TransferWise. Make sure to choose the most efficient and economical method " +
+                                    "for your needs.\n",
+                                icon = Icons.Outlined.Notifications
+                            )
+                        )
+                    )
+                }
+                is InboxPageTab.Notification -> {
+                    NotificationTab(
+                        notifications = listOf(
+                            NotificationMessage(
+                                title = "Free transfer other bank",
+                                message = "Enjoy free interbank transfer fees for a full month and many other attractive promos",
+                                imageUrl = ""
+                            ),
+                            NotificationMessage(
+                                title = "Pay using a Dragonfly credit card",
+                                message = "Enjoy discounts by using a credit card of up to 70% this promo applies only to new users",
+                                imageUrl = ""
+                            )
+                        )
+                    )
+                }
+            }
+        }
+    }
+}
+
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun InboxPage(
+fun InboxScreenContent(
     tabs: List<InboxPageTab>,
     selectedTab: InboxPageTab,
     onTabSelected: (tab: InboxPageTab) -> Unit,
@@ -64,7 +136,7 @@ fun InboxPage(
             modifier = Modifier.fillMaxWidth(),
             indicator = { tabPositions ->
                 if (selectedTabIndex < tabPositions.size) {
-                    TabRowDefaults.Indicator(
+                    SecondaryIndicator(
                         modifier = Modifier.tabIndicatorOffset(tabPositions[selectedTabIndex]),
                         color = colors.primary.main
                     )
@@ -119,7 +191,7 @@ private fun InboxPagePreview() {
         var selectedTab by remember {
             mutableStateOf(tabs.first())
         }
-        InboxPage(
+        InboxScreenContent(
             tabs = tabs,
             selectedTab = selectedTab,
             onTabSelected = { tab ->

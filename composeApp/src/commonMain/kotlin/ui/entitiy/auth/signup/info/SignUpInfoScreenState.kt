@@ -1,4 +1,4 @@
-package ui.entitiy.signup.info
+package ui.entitiy.auth.signup.info
 
 import androidx.compose.runtime.Immutable
 import domain.entity.auth.signup.InfoItem

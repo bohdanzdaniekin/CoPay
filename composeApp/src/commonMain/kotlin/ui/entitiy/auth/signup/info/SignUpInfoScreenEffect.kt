@@ -1,4 +1,4 @@
-package ui.entitiy.signup.info
+package ui.entitiy.auth.signup.info
 
 import ui.entitiy.core.UiEffect
 import utils.extensions.randomUUID

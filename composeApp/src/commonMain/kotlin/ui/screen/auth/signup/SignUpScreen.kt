@@ -15,12 +15,16 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.unit.dp
+import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.currentOrThrow
 import domain.entity.auth.signup.SignUpField
 import domain.entity.auth.signup.SignUpPageContent
 import dragonfly.composeapp.generated.resources.Res
@@ -35,26 +39,48 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 import ui.component.appbar.TitledTopAppBar
 import ui.component.button.PrimaryButton
-import ui.entitiy.signup.SignUpScreenEvent
-import ui.entitiy.signup.SignUpScreenState
+import ui.entitiy.auth.signup.SignUpScreenEffect
+import ui.entitiy.auth.signup.SignUpScreenEvent
+import ui.entitiy.auth.signup.SignUpScreenState
 import ui.theme.DragonFlyTheme
+import utils.extensions.collectAsEffect
 import utils.extensions.collectAsStateWithLifecycle
 
-@Composable
-fun SignUpScreen(
-    viewModel: SignUpViewModel = koinViewModel()
-) {
-    val state by viewModel.state.collectAsStateWithLifecycle()
+data class SignUpScreen(
+    val withGoogle: Boolean = false
+) : Screen {
 
-    SignUpScreen(
-        state = state,
-        onEvent = viewModel::onEvent
-    )
+    @Composable
+    override fun Content() {
+        val viewModel = koinViewModel<SignUpViewModel>()
+        val navigator = LocalNavigator.currentOrThrow
+
+        viewModel.effect.collectAsEffect { effect ->
+            when (effect) {
+                is SignUpScreenEffect.NavigateBack -> {
+                    navigator.pop()
+                }
+                is SignUpScreenEffect.NavigateToSignUpInfo -> {
+                    // Navigate to SignUpInfoScreen
+                }
+            }
+        }
+
+        LaunchedEffect(Unit) {
+            viewModel.onEvent(SignUpScreenEvent.OnInit(withGoogle))
+        }
+
+        val state by viewModel.state.collectAsStateWithLifecycle()
+        SignUpScreen(
+            state = state,
+            onEvent = viewModel::onEvent
+        )
+    }
 }
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun SignUpScreen(
+private fun SignUpScreen(
     state: SignUpScreenState,
     onEvent: (SignUpScreenEvent) -> Unit,
     modifier: Modifier = Modifier

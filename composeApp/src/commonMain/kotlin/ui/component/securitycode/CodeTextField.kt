@@ -8,7 +8,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.focus.FocusRequester
@@ -25,7 +24,6 @@ import ui.component.textfield.BaseTextField
 import ui.theme.DragonFlyTheme
 import utils.extensions.isDigitsOnly
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun CodeTextField(
     digit: String,

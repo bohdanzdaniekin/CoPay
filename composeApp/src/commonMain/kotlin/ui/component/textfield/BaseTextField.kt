@@ -1,22 +1,19 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
-
 package ui.component.textfield
 
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsFocusedAsState
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextFieldColors
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -26,6 +23,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import ui.theme.DragonFlyTheme
+
 
 @Composable
 fun BaseTextField(
@@ -71,11 +69,13 @@ fun BaseTextField(
         labelTextStyle.merge(TextStyle(labelTextColor))
     }
 
-    val innerPlaceholder = if (placeholder.isNullOrBlank()) {
-        label ?: " "
-    } else {
-        placeholder
+    val showPlaceholder by remember(value, placeholder) {
+        derivedStateOf {
+            value.isBlank() && !placeholder.isNullOrBlank()
+        }
     }
+
+    val showLabel = !label.isNullOrBlank()
 
     OutlinedTextField(
         value = value,
@@ -85,17 +85,21 @@ fun BaseTextField(
         readOnly = isReadOnly,
         textStyle = textStyle,
         shape = shape,
-        placeholder = @Composable {
-            Text(
-                text = innerPlaceholder,
-                style = mergedPlaceholderTextStyle,
-                maxLines = maxLines
-            )
-        },
-        label = if (!label.isNullOrBlank() && (value.isNotBlank() || innerPlaceholder.isBlank())) {
+        placeholder = if (showPlaceholder) {
             @Composable {
                 Text(
-                    text = label,
+                    text = placeholder.orEmpty(),
+                    style = mergedPlaceholderTextStyle,
+                    maxLines = maxLines
+                )
+            }
+        } else {
+            null
+        },
+        label = if (showLabel) {
+            @Composable {
+                Text(
+                    text = label.orEmpty(),
                     style = innerLabelTextStyle,
                     maxLines = maxLines
                 )
@@ -105,6 +109,9 @@ fun BaseTextField(
         },
         leadingIcon = leadingIcon,
         trailingIcon = trailingIcon,
+        prefix = prefix,
+        suffix = suffix,
+        supportingText = supportingText,
         singleLine = singleLine,
         maxLines = maxLines,
         minLines = minLines,
@@ -121,84 +128,72 @@ fun BaseTextField(
 @Composable
 private fun BaseTextFieldPreview() {
     DragonFlyTheme {
-        BaseTextField(
-            value = "Some Text",
-            onValueChange = {},
-            modifier = Modifier
-                .padding(DragonFlyTheme.spacing.medium)
-                .height(72.dp)
-                .fillMaxWidth()
-        )
-    }
-}
-
-@Preview
-@Composable
-private fun BaseTextFieldPreviewPlaceholder() {
-    DragonFlyTheme {
-        BaseTextField(
-            value = "",
-            onValueChange = {},
-            placeholder = "Placeholder",
+        Column(
             modifier = Modifier
                 .padding(DragonFlyTheme.spacing.medium)
                 .fillMaxWidth()
-                .height(72.dp)
-        )
-    }
-}
-
-@Preview
-@Composable
-private fun BaseTextFieldPreviewLabel() {
-    DragonFlyTheme {
-        Row {
+        ) {
             BaseTextField(
-                value = "",
+                value = "Some Text",
                 onValueChange = {},
                 modifier = Modifier
                     .padding(DragonFlyTheme.spacing.medium)
                     .height(72.dp)
-                    .weight(1f),
-                singleLine = true
+                    .fillMaxWidth()
             )
+
             BaseTextField(
                 value = "",
                 onValueChange = {},
                 placeholder = "Placeholder",
                 modifier = Modifier
                     .padding(DragonFlyTheme.spacing.medium)
+                    .fillMaxWidth()
                     .height(72.dp)
-                    .weight(1f),
-                singleLine = true
             )
+
+            Row {
+                BaseTextField(
+                    value = "",
+                    onValueChange = {},
+                    modifier = Modifier
+                        .padding(DragonFlyTheme.spacing.medium)
+                        .height(72.dp)
+                        .weight(1f),
+                    singleLine = true
+                )
+                BaseTextField(
+                    value = "",
+                    onValueChange = {},
+                    placeholder = "Placeholder",
+                    modifier = Modifier
+                        .padding(DragonFlyTheme.spacing.medium)
+                        .height(72.dp)
+                        .weight(1f),
+                    singleLine = true
+                )
+                BaseTextField(
+                    value = "",
+                    onValueChange = {},
+                    label = "Placeholder",
+                    modifier = Modifier
+                        .padding(DragonFlyTheme.spacing.medium)
+                        .height(72.dp)
+                        .weight(1f),
+                    singleLine = true
+                )
+            }
+
             BaseTextField(
-                value = "",
+                value = "Some text",
                 onValueChange = {},
-                label = "Placeholder",
+                placeholder = "Placeholder",
+                label = "Label",
                 modifier = Modifier
                     .padding(DragonFlyTheme.spacing.medium)
+                    .fillMaxWidth()
                     .height(72.dp)
-                    .weight(1f),
-                singleLine = true
             )
         }
-    }
-}
-
-@Preview
-@Composable
-private fun BaseTextFieldPreviewPlaceholderAndLabel() {
-    DragonFlyTheme {
-        BaseTextField(
-            value = "Some text",
-            onValueChange = {},
-            placeholder = "Placeholder",
-            label = "Label",
-            modifier = Modifier
-                .padding(DragonFlyTheme.spacing.medium)
-                .fillMaxWidth()
-                .height(72.dp)
-        )
     }
 }

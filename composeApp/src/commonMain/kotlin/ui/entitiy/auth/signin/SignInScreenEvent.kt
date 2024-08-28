@@ -1,4 +1,4 @@
-package ui.entitiy.signin
+package ui.entitiy.auth.signin
 
 import ui.entitiy.core.UiEvent
 

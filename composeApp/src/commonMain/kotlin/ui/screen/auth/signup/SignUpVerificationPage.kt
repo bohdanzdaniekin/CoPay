@@ -29,8 +29,8 @@ import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import ui.component.securitycode.SecurityCode
 import ui.component.securitycode.SecurityCodeState
-import ui.entitiy.signup.SignUpVerificationPageEvent
-import ui.entitiy.signup.SignUpVerificationPageState
+import ui.entitiy.auth.signup.SignUpVerificationPageEvent
+import ui.entitiy.auth.signup.SignUpVerificationPageState
 import ui.theme.DragonFlyTheme
 
 @Composable

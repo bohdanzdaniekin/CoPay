@@ -22,6 +22,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.currentOrThrow
 import dragonfly.composeapp.generated.resources.Res
 import dragonfly.composeapp.generated.resources.button_forgot_password
 import dragonfly.composeapp.generated.resources.button_login
@@ -45,40 +48,46 @@ import ui.component.button.PrimaryButton
 import ui.component.text.TitleText
 import ui.component.textfield.BaseTextField
 import ui.component.textfield.PasswordTextField
-import ui.entitiy.signin.SignInScreenEffect
-import ui.entitiy.signin.SignInScreenEvent
-import ui.entitiy.signin.SignInScreenState
+import ui.entitiy.auth.signin.SignInScreenEffect
+import ui.entitiy.auth.signin.SignInScreenEvent
+import ui.entitiy.auth.signin.SignInScreenState
+import ui.screen.auth.signin.code.SecurityCodeScreen
+import ui.screen.auth.signup.SignUpScreen
 import ui.theme.DragonFlyTheme
 import utils.extensions.collectAsEffect
 import utils.extensions.collectAsStateWithLifecycle
 
-@Composable
-fun SignInScreen(
-    viewModel: SignInViewModel = koinViewModel()
-) {
-    val state by viewModel.state.collectAsStateWithLifecycle()
+class SignInScreen : Screen {
 
-    viewModel.effect.collectAsEffect { effect ->
-        when (effect) {
-            is SignInScreenEffect.LoginWithGmail -> {
-                // TODO: To be implemented
-            }
-            is SignInScreenEffect.NavigateForward -> {
-                // TODO: To be implemented
-            }
-            is SignInScreenEffect.NavigateToForgotPassword -> {
-                // TODO: To be implemented
-            }
-            is SignInScreenEffect.NavigateToSignUp -> {
-                // TODO: To be implemented
+    @Composable
+    override fun Content() {
+        val viewModel: SignInViewModel = koinViewModel()
+        val state by viewModel.state.collectAsStateWithLifecycle()
+
+        val navigator = LocalNavigator.currentOrThrow
+
+        viewModel.effect.collectAsEffect { effect ->
+            when (effect) {
+                is SignInScreenEffect.LoginWithGmail -> {
+                    // TODO: To be implemented
+                }
+                is SignInScreenEffect.NavigateForward -> {
+                    navigator.push(SecurityCodeScreen())
+                }
+                is SignInScreenEffect.NavigateToForgotPassword -> {
+                    // TODO: To be implemented
+                }
+                is SignInScreenEffect.NavigateToSignUp -> {
+                    navigator.push(SignUpScreen())
+                }
             }
         }
-    }
 
-    SignInScreen(
-        state = state,
-        onEvent = viewModel::onEvent
-    )
+        SignInScreen(
+            state = state,
+            onEvent = viewModel::onEvent
+        )
+    }
 }
 
 @Composable
@@ -186,7 +195,7 @@ private fun SignInScreen(
             PrimaryButton(
                 text = stringResource(resource = Res.string.button_login),
                 onClick = {
-                    onEvent(SignInScreenEvent.OnLoginWithGmailClicked)
+                    onEvent(SignInScreenEvent.OnLoginClicked)
                 },
                 modifier = Modifier
                     .fillMaxWidth()

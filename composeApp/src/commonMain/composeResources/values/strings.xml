@@ -17,7 +17,7 @@
     <string name="welcome">Welcome</string>
     <string name="sign_in_subtitle">Enjoy all the features that make it easy for you to manage your finances</string>
     <string name="other">Other</string>
-    <string name="register_part_first">Don\'t have an account? </string>
+    <string name="register_part_first">Don't have an account? </string>
     <string name="register">Register</string>
     <string name="register_subtitle">Create an account and enjoy the benefits we provide for you</string>
     <string name="enter_security_code">Enter security code</string>

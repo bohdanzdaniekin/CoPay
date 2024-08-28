@@ -10,11 +10,11 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import org.jetbrains.compose.resources.stringResource
 import ui.base.BaseViewModel
-import ui.entitiy.signup.SignUpScreenEffect
-import ui.entitiy.signup.SignUpScreenEvent
-import ui.entitiy.signup.SignUpScreenState
-import ui.entitiy.signup.SignUpVerificationPageEvent
-import ui.entitiy.signup.SignUpVerificationPageState
+import ui.entitiy.auth.signup.SignUpScreenEffect
+import ui.entitiy.auth.signup.SignUpScreenEvent
+import ui.entitiy.auth.signup.SignUpScreenState
+import ui.entitiy.auth.signup.SignUpVerificationPageEvent
+import ui.entitiy.auth.signup.SignUpVerificationPageState
 
 class SignUpViewModel : BaseViewModel<SignUpScreenState, SignUpScreenEffect, SignUpScreenEvent>() {
 
@@ -23,6 +23,9 @@ class SignUpViewModel : BaseViewModel<SignUpScreenState, SignUpScreenEffect, Sig
 
     override fun onEvent(event: SignUpScreenEvent) {
         when (event) {
+            is SignUpScreenEvent.OnInit -> {
+
+            }
             SignUpScreenEvent.OnInfoClicked -> {
                 // TODO:
             }

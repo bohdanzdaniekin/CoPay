@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.lifecycle.flowWithLifecycle
+import cafe.adriel.voyager.core.screen.Screen
 import domain.entity.OnboardingContent
 import dragonfly.composeapp.generated.resources.Res
 import dragonfly.composeapp.generated.resources.bg_onboarding_page_1
@@ -28,6 +29,14 @@ import ui.theme.DragonFlyTheme
 import utils.extensions.collectAsEffect
 import utils.extensions.collectAsStateWithLifecycle
 import kotlin.math.absoluteValue
+
+class OnboardingScreen : Screen {
+
+    @Composable
+    override fun Content() {
+        TODO("Not yet implemented")
+    }
+}
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable

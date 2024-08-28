@@ -11,6 +11,9 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusProperties
+import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.input.key.key
+import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import ui.theme.DragonFlyTheme
@@ -59,6 +62,17 @@ fun SecurityCode(
             modifier = fieldModifier
                 .focusProperties {
                     previous = firstDigitFocus
+                }
+                .onKeyEvent {
+                    if (it.key == Key.Backspace) {
+                        state
+                            .secondDigit
+                            .takeIf(String::isBlank)
+                            ?.let { firstDigitFocus.requestFocus() }
+                        true
+                    } else {
+                        false
+                    }
                 },
             previousFocus = firstDigitFocus,
             nextFocus = thirdDigitFocus,
@@ -73,6 +87,17 @@ fun SecurityCode(
             modifier = fieldModifier
                 .focusProperties {
                     previous = secondDigitFocus
+                }
+                .onKeyEvent {
+                    if (it.key == Key.Backspace) {
+                        state
+                            .thirdDigit
+                            .takeIf(String::isBlank)
+                            ?.let { secondDigitFocus.requestFocus() }
+                        true
+                    } else {
+                        false
+                    }
                 },
             previousFocus = secondDigitFocus,
             nextFocus = fourthDigitFocus,
@@ -88,6 +113,17 @@ fun SecurityCode(
                 .focusProperties {
                     previous = thirdDigitFocus
                     next = FocusRequester.Cancel
+                }
+                .onKeyEvent {
+                    if (it.key == Key.Backspace) {
+                        state
+                            .fourthDigit
+                            .takeIf(String::isBlank)
+                            ?.let { thirdDigitFocus.requestFocus() }
+                        true
+                    } else {
+                        false
+                    }
                 },
             previousFocus = thirdDigitFocus,
             nextFocus = null,

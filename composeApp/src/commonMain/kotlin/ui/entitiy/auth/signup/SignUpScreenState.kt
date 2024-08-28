@@ -1,4 +1,4 @@
-package ui.entitiy.signup
+package ui.entitiy.auth.signup
 
 import androidx.annotation.FloatRange
 import androidx.compose.runtime.Immutable

@@ -23,9 +23,11 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import cafe.adriel.voyager.core.screen.Screen
 import dragonfly.composeapp.generated.resources.Res
 import dragonfly.composeapp.generated.resources.button_create
 import dragonfly.composeapp.generated.resources.button_view_more
@@ -49,16 +51,43 @@ import dragonfly.composeapp.generated.resources.your_balance
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import org.koin.compose.viewmodel.koinViewModel
 import ui.component.AdCard
 import ui.component.TableCell
 import ui.component.text.HideableText
+import ui.entitiy.main.home.HomeAd
+import ui.entitiy.main.home.HomeScreenEvent
+import ui.entitiy.main.home.HomeScreenState
 import ui.theme.DragonFlyTheme
 import ui.theme.shapes
+import utils.extensions.collectAsEffect
+import utils.extensions.collectAsStateWithLifecycle
 import utils.extensions.format
 
+class HomeScreen : Screen {
+
+    @Composable
+    override fun Content() {
+        val viewModel = koinViewModel<HomeViewModel>()
+        val state by viewModel.state.collectAsStateWithLifecycle()
+
+        viewModel.effect.collectAsEffect { effect ->
+            when (effect) {
+                else -> {}
+            }
+        }
+
+        HomeScreenContent(
+            state = state,
+            onEvent = viewModel::onEvent
+        )
+    }
+}
+
 @Composable
-fun HomePage(
-    isAdVisible: Boolean,
+fun HomeScreenContent(
+    state: HomeScreenState,
+    onEvent: (HomeScreenEvent) -> Unit,
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(0.dp)
 ) {
@@ -77,7 +106,15 @@ fun HomePage(
         item(
             span = { GridItemSpan(2) }
         ) {
-            HomePageHeader(isAdVisible)
+            HomePageHeader(balance = state.balance,
+                ad = state.ad,
+                onSend = { onEvent(HomeScreenEvent.SendMoney) },
+                onRequest = { onEvent(HomeScreenEvent.RequestMoney) },
+                onHistory = { onEvent(HomeScreenEvent.ViewHistory) },
+                onCreatePocket = { onEvent(HomeScreenEvent.CreatePocket) },
+                onForwardFromAd = { onEvent(HomeScreenEvent.ForwardFromAd) },
+                onCloseAd = { onEvent(HomeScreenEvent.CloseAd) }
+            )
         }
 
         items(
@@ -161,7 +198,7 @@ fun HomePage(
                             color = colors.neutral2
                         )
                     }
-                    currencies.forEach { currency ->
+                    state.currency.currencies.forEach { currency ->
                         Row(
                             Modifier.padding(top = spacing.small)
                         ) {
@@ -181,11 +218,11 @@ fun HomePage(
                     }
 
                     TextButton(
-                        onClick = { /*TODO Refresh*/ },
+                        onClick = { onEvent(HomeScreenEvent.UpdateCurrencies) },
                         modifier = Modifier.align(Alignment.CenterHorizontally)
                     ) {
                         Text(
-                            text = "Updated 1 hour ago", // TODO
+                            text = state.currency.updatedAt,
                             style = typography.text2.regular,
                             color = colors.primary.main
                         )
@@ -200,16 +237,24 @@ fun HomePage(
 
 @Composable
 private fun HomePageHeader(
-    isAdVisible: Boolean
+    balance: String,
+    ad: HomeAd,
+    modifier: Modifier = Modifier,
+    onSend: () -> Unit,
+    onRequest: () -> Unit,
+    onHistory: () -> Unit,
+    onCreatePocket: () -> Unit,
+    onCloseAd: () -> Unit = {},
+    onForwardFromAd: () -> Unit = {}
 ) {
     val spacing = DragonFlyTheme.spacing
     val typography = DragonFlyTheme.typography
     val colors = DragonFlyTheme.colors
-    Column {
+    Column(modifier = modifier) {
         Spacer(modifier = Modifier.height(spacing.medium))
 
         Balance(
-            balance = "\$ 49,250.00" // TODO
+            balance = "\$ $balance" // TODO
         )
 
         Spacer(modifier = Modifier.height(spacing.medium))
@@ -229,28 +274,28 @@ private fun HomePageHeader(
             MoneyOperationItem(
                 text = stringResource(resource = Res.string.send),
                 icon = painterResource(resource = Res.drawable.ic_money_send),
-                onClick = { /*TODO*/ }
+                onClick = onSend
             )
             MoneyOperationItem(
                 text = stringResource(resource = Res.string.request),
                 icon = painterResource(resource = Res.drawable.ic_money_request),
-                onClick = { /*TODO*/ }
+                onClick = onRequest
             )
             MoneyOperationItem(
                 text = stringResource(resource = Res.string.history),
                 icon = painterResource(resource = Res.drawable.ic_money_history),
-                onClick = { /*TODO*/ }
+                onClick = onHistory
             )
         }
 
         Spacer(modifier = Modifier.height(spacing.medium))
 
-        AnimatedVisibility(visible = isAdVisible) {
+        AnimatedVisibility(visible = ad.isVisible) {
             AdBanner(
-                title = "Let's connect", // TODO
-                description = "Connect account with marketplace for automatic payment and get \$25 bonus", // TODO
-                onClose = { /*TODO*/ },
-                onNavigateForward = { /*TODO*/ },
+                title = ad.title,
+                description = ad.description,
+                onClose = onCloseAd,
+                onNavigateForward = onForwardFromAd,
                 modifier = Modifier
                     .fillMaxWidth()
                     .wrapContentHeight()
@@ -260,7 +305,7 @@ private fun HomePageHeader(
         Spacer(modifier = Modifier.height(spacing.medium))
 
         MyPocket(
-            onCreate = { /*TODO*/ }
+            onCreate = onCreatePocket
         )
     }
 }
@@ -412,8 +457,9 @@ private fun Balance(
 @Composable
 private fun HomeScreenPreview() {
     DragonFlyTheme {
-        HomePage(
-            isAdVisible = true
+        HomeScreenContent(
+            state = HomeScreenState(),
+            onEvent = {}
         )
     }
 }

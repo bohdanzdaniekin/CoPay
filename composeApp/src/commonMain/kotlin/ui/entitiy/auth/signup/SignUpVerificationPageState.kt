@@ -1,4 +1,4 @@
-package ui.entitiy.signup
+package ui.entitiy.auth.signup
 
 import androidx.compose.runtime.Immutable
 import domain.entity.auth.signup.PhoneValue

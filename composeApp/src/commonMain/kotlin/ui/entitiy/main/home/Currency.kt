@@ -1,9 +1,14 @@
-package ui.screen.main.home
+package ui.entitiy.main.home
 
 data class Currency(
     val name: String,
     val price: Double,
     val rates: Double
+)
+
+data class CurrencyState(
+    val currencies: List<Currency> = emptyList(),
+    val updatedAt: String = ""
 )
 
 val currencies = listOf(

@@ -10,20 +10,73 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.currentOrThrow
 import dragonfly.composeapp.generated.resources.Res
 import dragonfly.composeapp.generated.resources.enter_security_code
 import dragonfly.composeapp.generated.resources.ic_lock
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import org.koin.compose.viewmodel.koinViewModel
 import ui.component.securitycode.SecurityCode
 import ui.component.securitycode.SecurityCodeState
+import ui.entitiy.auth.security.code.SecurityCodeScreenEffect
+import ui.entitiy.auth.security.code.SecurityCodeScreenEvent
+import ui.entitiy.auth.security.code.SecurityCodeScreenState
+import ui.screen.main.MainScreen
 import ui.theme.DragonFlyTheme
+import utils.extensions.collectAsEffect
+import utils.extensions.collectAsStateWithLifecycle
+
+class SecurityCodeScreen : Screen {
+
+        @Composable
+        override fun Content() {
+            val viewModel = koinViewModel<SecurityCodeViewModel>()
+            val state by viewModel.state.collectAsStateWithLifecycle()
+
+            val navigator = LocalNavigator.currentOrThrow
+
+            viewModel.effect.collectAsEffect { effect ->
+                when (effect) {
+                    is SecurityCodeScreenEffect.NavigateBack -> {
+                        navigator.pop()
+                    }
+                    is SecurityCodeScreenEffect.NavigateForward -> {
+                        navigator.replaceAll(MainScreen())
+                    }
+                }
+            }
+
+            SecurityCodeScreen(
+                state = state,
+                onEvent = viewModel::onEvent
+            )
+        }
+}
 
 @Composable
-fun SecurityCodeScreen(
+private fun SecurityCodeScreen(
+    state: SecurityCodeScreenState,
+    onEvent: (SecurityCodeScreenEvent) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    SecurityCodeScreen(
+        state = state.securityCode,
+        onStateChanged = { securityCode ->
+            onEvent(SecurityCodeScreenEvent.SecurityCodeChanged(securityCode))
+        },
+        modifier = modifier
+    )
+}
+
+@Composable
+private fun SecurityCodeScreen(
     state: SecurityCodeState,
     onStateChanged: (SecurityCodeState) -> Unit,
     modifier: Modifier = Modifier
