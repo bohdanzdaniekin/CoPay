@@ -53,6 +53,7 @@ import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 import ui.component.AdCard
+import ui.component.CreditCardItem
 import ui.component.TableCell
 import ui.component.text.HideableText
 import ui.entitiy.main.home.HomeAd

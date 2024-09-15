@@ -1,4 +1,4 @@
-package ui.screen.main.home
+package ui.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
@@ -23,7 +23,6 @@ import dragonfly.composeapp.generated.resources.bg_debit_card_1
 import dragonfly.composeapp.generated.resources.ic_card_chip
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
-import ui.component.CardTitledLogo
 import ui.theme.DragonFlyTheme
 import kotlin.jvm.JvmInline
 
@@ -33,9 +32,9 @@ value class CardNumber(val number: String)
 
 @Composable
 fun CreditCardItem(
-    /*username: String,
-    cardNumber: CardNumber,
-    pocketName: String,
+    cardholder: String = "Bianca Liza", // TODO
+    cardNumber: CardNumber = CardNumber("1234 5678 9000 0000"),
+    /*pocketName: String,
     currency: String,
     amount: Double,*/
     modifier: Modifier = Modifier
@@ -76,7 +75,7 @@ fun CreditCardItem(
                     .padding(bottom = spacing.medium, start = spacing.medium)
             ) {
                 Text(
-                    text = "Bianca Liza", // TODO
+                    text = cardholder,
                     style = typography.text2.regular,
                     color = colors.neutral8
                 )
@@ -84,7 +83,7 @@ fun CreditCardItem(
                 Spacer(modifier = Modifier.height(spacing.xxSmall))
 
                 Text(
-                    text = "1234 5678 9000 0000", // TODO
+                    text = cardNumber.number, // TODO
                     style = typography.card,
                     color = colors.neutral8
                 )
