@@ -7,6 +7,7 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.repeatOnLifecycle
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.withContext
 import ui.entitiy.core.UiEffect
@@ -18,7 +19,7 @@ fun <Effect : UiEffect> Flow<Effect>.collectAsEffect(
     lifecycle: Lifecycle = LocalLifecycleOwner.current.lifecycle,
     minActiveState: Lifecycle.State = Lifecycle.State.STARTED,
     context: CoroutineContext = EmptyCoroutineContext,
-    collector: suspend (sideEffect: Effect) -> Unit
+    collector: FlowCollector<Effect>
 ) {
     LaunchedEffect(this, lifecycle, minActiveState, context) {
         lifecycle.repeatOnLifecycle(minActiveState) {

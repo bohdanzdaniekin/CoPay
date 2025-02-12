@@ -1,6 +1,6 @@
 package di
 
-import org.koin.compose.viewmodel.dsl.viewModelOf
+import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 import ui.screen.auth.signin.SignInViewModel
 import ui.screen.auth.signin.code.SecurityCodeViewModel

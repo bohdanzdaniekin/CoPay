@@ -38,7 +38,6 @@ class OnboardingScreen : Screen {
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun OnboardingScreen(
     viewModel: OnboardingViewModel = koinViewModel()
@@ -122,7 +121,7 @@ private fun OnboardingScreen(
                     onEvent(OnboardingScreenEvent.OnScrollBackward)
                 },
                 modifier = Modifier.graphicsLayer {
-                    val pageOffset = pagerState.getOffsetFractionForPage(pageIndex)
+                    val pageOffset = pagerState.getOffsetDistanceInPages(pageIndex)
                     translationX = pageOffset * size.width
                     alpha = 1 - pageOffset.absoluteValue
                 }

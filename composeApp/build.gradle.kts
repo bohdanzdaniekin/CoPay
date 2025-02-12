@@ -12,13 +12,10 @@ plugins {
 
 kotlin {
     androidTarget {
-        @OptIn(ExperimentalKotlinGradlePluginApi::class)
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_11)
         }
     }
-    
-    jvm("desktop")
     
     listOf(
         iosX64(),
@@ -30,6 +27,8 @@ kotlin {
             isStatic = true
         }
     }
+
+    jvm("desktop")
 
     val osName = System.getProperty("os.name")
     val targetOs = when {
@@ -45,7 +44,7 @@ kotlin {
         else -> error("Unsupported arch: $osArch")
     }
 
-    val version = "0.8.10"
+    val version = "0.8.25"
     val target = "${targetOs}-${targetArch}"
     
     sourceSets {
@@ -54,7 +53,7 @@ kotlin {
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.activity.compose)
-            implementation(libs.lifecycle.runtime.compose)
+//          implementation(libs.lifecycle.runtime.compose)
 
             implementation(libs.utils.koin.android)
             implementation(libs.utils.koin.androidx.compose)
@@ -72,13 +71,15 @@ kotlin {
 
             implementation(libs.lifecycle.common)
             implementation(libs.lifecycle.viewmodel)
+            implementation(libs.lifecycle.runtime)
+//            implementation(libs.lifecycle.runtime.compose)
 
             api(libs.utils.koin.core)
             implementation(libs.utils.koin.compose)
             implementation(libs.utils.koin.compose.viewmodel)
 
             implementation(libs.voyager.navigator)
-            implementation(libs.voyager.bottomSheetNavigator)
+//            implementation(libs.voyager.bottomSheetNavigator)
             implementation(libs.voyager.tabNavigator)
             implementation(libs.voyager.transitions)
             implementation(libs.voyager.koin)
@@ -94,7 +95,6 @@ kotlin {
             //noinspection UseTomlInstead
             implementation("org.jetbrains.skiko:skiko-awt-runtime-$target:$version")
             implementation(compose.desktop.currentOs)
-            implementation(libs.lifecycle.runtime.compose)
         }
     }
 }
@@ -150,9 +150,6 @@ android {
 
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
-    }
-    buildFeatures {
-        compose = true
     }
     dependencies {
         coreLibraryDesugaring(libs.desugaring)
